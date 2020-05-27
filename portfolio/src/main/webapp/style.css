@@ -3,8 +3,8 @@ html {
 }
 
 body {
-    background-image: url(resources/bgTile.png);
-    background-repeat: repeat;
+  background-image: url(resources/bgTile.png);
+  background-repeat: repeat;
 }
 
 #content {
@@ -14,8 +14,8 @@ body {
 }
 
 #content p {
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
 }
 
 #greeting-container {
@@ -23,17 +23,17 @@ body {
 }
 
 .margin img {
-    max-width: 15em;
-    height: auto;
-    border: 3em;
+  max-width: 15em;
+  height: auto;
+  border: 3em;
 }
 
 #left {
-    float: left;
+  float: left;
 }
 
 #right {
-    float: right;
+  float: right;
 }
 
 .image-thumbnails img {
@@ -47,7 +47,7 @@ body {
 }
 
 .image-thumbnails p {
-    text-align: center;
+  text-align: center;
 }
 
 .icons img {
