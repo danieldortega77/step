@@ -22,6 +22,20 @@ body {
   margin-top: 1.25em;
 }
 
+.margin img {
+    max-width: 15em;
+    height: auto;
+    border: 3em;
+}
+
+#left {
+    float: left;
+}
+
+#right {
+    float: right;
+}
+
 .image-thumbnails img {
     border: 1em solid rgb(132, 179, 249);
     max-width:100%;
