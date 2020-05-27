@@ -12,6 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+function aboutme() {
+    window.location = 'aboutme.html';
+}
+
+function home() {
+    window.location = 'index.html';
+}
+
+function gallery() {
+    window.location = 'images.html';
+}
+
+function projects() {
+    window.location = 'projects.html';
+}
+
+function work() {
+    window.location = 'work.html';
+}
+
 function openResume() {
     window.open('/resources/resume.pdf');
 }
