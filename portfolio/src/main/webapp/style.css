@@ -20,28 +20,10 @@ body {
   margin-bottom: 1.5em;
 }
 
-#greeting-container {
-  margin-top: 1.25em;
-}
-
-#home {
-  margin-top: 1.25em;
-  margin-bottom: 1.25em;
-  text-align: center;
-}
-
-#left {
-  float: left;
-}
-
 #me {
   border-radius: 50px;
   max-height: 300px;
   width: auto;
-}
-
-#right {
-  float: right;
 }
 
 .margin img {
@@ -61,7 +43,7 @@ body {
 }
 
 .image-thumbnails p {
-  text-align: center;
+  text-align: left;
 }
 
 .icon img {
@@ -71,17 +53,13 @@ body {
 }
 
 .title {
-  text-shadow: 4px 4px 3px rgb(132, 179, 249);
-  text-align: center;
-  margin: 0.5em;
+  text-shadow: 2px 2px 3px rgb(132, 179, 249);
+  margin: 1em;
 }
 
 .description {
-  margin: 0.5em;
-}
-
-a {
-  text-decoration: none;
+  margin-bottom: 0.5em;
+  text-align: left;
 }
 
 button {
@@ -100,7 +78,3 @@ button:hover {
   background-color: rgb(132, 179, 249);
   color: white;
 }
-
-/* h1 {
-  text-align: center;
-} */
