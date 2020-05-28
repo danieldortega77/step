@@ -5,6 +5,8 @@ html {
 body {
   background-image: url(resources/bgTile.png);
   background-repeat: repeat;
+  font: times, georgia, sans-serif;
+  padding-top: 100px;
 }
 
 #content {
@@ -33,9 +35,9 @@ body {
 }
 
 #me {
-  border-radius: 100px;
-  height: 600px;
-  width: 400px;
+  border-radius: 50px;
+  max-height: 300px;
+  width: auto;
 }
 
 #right {
@@ -99,7 +101,6 @@ button:hover {
   color: white;
 }
 
-h1 {
-  font-size: 2em;
+/* h1 {
   text-align: center;
-}
+} */
