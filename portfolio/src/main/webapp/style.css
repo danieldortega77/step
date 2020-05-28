@@ -2,14 +2,50 @@ html {
   font-size: 100%;
 }
 
+body {
+  background-image: url(resources/bgTile.png);
+  background-repeat: repeat;
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;
   width: 650px;
 }
 
+#content p {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
 #greeting-container {
   margin-top: 1.25em;
+}
+
+#home {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  text-align: center;
+}
+
+#left {
+  float: left;
+}
+
+#me {
+  border-radius: 100px;
+  height: 600px;
+  width: 400px;
+}
+
+#right {
+  float: right;
+}
+
+.margin img {
+  max-width: 15em;
+  height: auto;
+  border: 3em;
 }
 
 .image-thumbnails img {
@@ -22,13 +58,17 @@ html {
   border: 1em solid skyblue;
 }
 
+.image-thumbnails p {
+  text-align: center;
+}
+
 .icons img {
   border: 0.625em;
   max-width: 10%;
   max-height: 10%;
 }
 
-.work {
+.title {
   text-shadow: 4px 4px 3px rgb(132, 179, 249);
   text-align: center;
   margin: 0.5em;
@@ -36,6 +76,10 @@ html {
 
 .description {
   margin: 0.5em;
+}
+
+a {
+  text-decoration: none;
 }
 
 button {
