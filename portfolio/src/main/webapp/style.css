@@ -9,27 +9,10 @@ body {
   padding-top: 100px;
 }
 
-#content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
-}
-
-#content p {
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
-}
-
 #me {
   border-radius: 50px;
   max-height: 300px;
   width: auto;
-}
-
-.margin img {
-  max-width: 15em;
-  height: auto;
-  border: 3em;
 }
 
 .image-thumbnails img {
@@ -40,10 +23,6 @@ body {
 
 .image-thumbnails img:hover {
   border: 1em solid skyblue;
-}
-
-.image-thumbnails p {
-  text-align: left;
 }
 
 .icon img {
@@ -63,8 +42,8 @@ body {
 }
 
 button {
-  background-color: white;
-  border: 0.125em solid rgb(132, 179, 249);
+  background-color: rgb(132, 179, 249);
+  border: 0.125em transparent;
   color: black;
   padding: 1em 2em;
   text-align: center;
@@ -75,6 +54,6 @@ button {
 }
 
 button:hover {
-  background-color: rgb(132, 179, 249);
+  background-color: skyblue;
   color: white;
 }
