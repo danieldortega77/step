@@ -78,6 +78,10 @@ body {
   margin: 0.5em;
 }
 
+a {
+  text-decoration: none;
+}
+
 button {
   background-color: white;
   border: 0.125em solid rgb(132, 179, 249);
