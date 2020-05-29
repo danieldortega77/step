@@ -2,50 +2,77 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>About Me</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="script.js"></script>
   </head>
   <body>
-    <div class="margin">
-        <div id="left">
-            <img src="images/Google.webp"><br>
-            <img src="images/Yale.png"><br>
-            <img src="images/Smash.png">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href='index.html'>Daniel Ortega's Portfolio</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="aboutme.html">About Me</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="projects.html">Projects</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="work.html">Experience</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="images.html">Images</a>
+        </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col-3 icon">
+          <img src="images/Google.webp"><br>
+          <img src="images/Yale.png"><br>
+          <img src="images/Smash.png">
         </div>
-        <div id="right">
-            <img src="images/Cali.png"><br>
-            <img src="images/Fordham.png"><br>
-            <img src="images/Record.png">
+        <div class="col-6">
+          <h1 class="text-center">About Me</h1>
+          <p>Hi! I'm Daniel Ortega, a STEP Intern at Google. Welcome to my protfolio!</p>
+          <p>I was born in Seattle, Washington, but grew up in Southern California. Since then, my twin sister have both gone to college on the East Coast. I study computer science at Yale, and she studies dance at Fordham University.</p>
+          <p>In my spare time, I enjoy DJing, beatboxing, and playing Smash Ultimate.</p>
+          <div class="row text-center justify-content-center align-items-center icon">
+            <div class="col-4 col-md-2">
+              <a href="https://www.linkedin.com/in/danielortega77/">
+                <img src="/images/LinkedIn.png">
+              </a>
+            </div>
+            <div class="col-4 col-md-2">
+              <a href="https://www.instagram.com/daniel.d.o/">
+                <img src="/images/Instagram.png">
+              </a>
+            </div>
+            <div class="col-4 col-md-2">
+              <a href="https://www.facebook.com/profile.php?id=100025246023927">
+                <img src="/images/Facebook.png">
+              </a>
+            </div>
+          </div>
         </div>
-    </div>
-
-    <h1>About Me</h1>
-    <div id="home">
-      <a href='index.html'> <button type="submit">Home</button> </a>
-      <a href='aboutme.html'> <button type="submit">About Me</button> </a>
-      <a href='projects.html'> <button type="submit">Projects</button> </a>
-      <a href='work.html'> <button type="submit">Experience</button> </a>
-      <a href='images.html'> <button type="submit">Images</button> </a>  
-    </div>
-
-    <div id="content">
-      <p>Hi! I'm Daniel Ortega, a STEP Intern at Google. Welcome to my protfolio!</p>
-      <p>I was born in Seattle, Washington, but grew up in Southern California. Since then, my twin sister have both gone to college on the East Coast. I study computer science at Yale, and she studies dance at Fordham University.</p>
-      <p>In my spare time, I enjoy DJing, beatboxing, and playing Smash Ultimate.</p>
-
-      <h2>Social Media</h2>
-      <div class="icons">
-        <a href="https://www.linkedin.com/in/danielortega77/">
-            <img src="/images/LinkedIn.png">
-        </a>
-        <a href="https://www.instagram.com/daniel.d.o/">
-            <img src="/images/Instagram.png">
-        </a>
-        <a href="https://www.facebook.com/profile.php?id=100025246023927">
-            <img src="/images/Facebook.png">
-        </a>
+        <div class="col-3 icon">
+          <img src="images/Cali.png"><br>
+          <img src="images/Fordham.png"><br>
+          <img src="images/Record.png">
+        </div>
       </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   </body>
 </html>

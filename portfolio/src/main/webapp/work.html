@@ -2,56 +2,117 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Work Experience</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="script.js"></script>
   </head>
   <body>
-    <h1>Work Experience</h1>
-    <div id="home">
-      <a href='index.html'> <button type="submit">Home</button> </a>
-      <a href='aboutme.html'> <button type="submit">About Me</button> </a>
-      <a href='projects.html'> <button type="submit">Projects</button> </a>
-      <a href='work.html'> <button type="submit">Experience</button> </a>
-      <a href='images.html'> <button type="submit">Images</button> </a>
-    </div>
-
-    <div id="content">
-        <div class="title">Cluster Technician Coordinator – Student Technology Collaborative
-            <br>
-            February 2019 - present
-            <br>
-        Yale University, New Haven, CT</div>
-        <div class="description">Overseeing all shifts of Cluster Technicians on campus, contacting appropriate resources to resolve computer
-        errors, issuing warnings to Cluster Technicians not fulfilling job requirements, and collaborating daily with
-        other Coordinators to ensure that computer clusters are adequately maintained.<br><br></div>
-        <div class="title">Teaching Assistant – CS50
-            <br>
-            May 2019 - June 2019
-            <br>
-        Yale University, New Haven, CT</div>
-        <div class="description">Delivered key insights to over thirty students taking CS50 - Introduction to Computer Science - during open
-        office hours held twice a week. Held weekly meetings and lunches related to coursework, and graded
-        problem sets in C, Python, HTML, CSS, and JavaScript.<br><br></div>
-        <div class="title">Cluster Technician – Student Technology Collaborative
-            <br>
-            October 2018 - February 2019
-            <br>
-        Yale University, New Haven, CT</div>
-        <div class="description">Supported and maintained cluster computers on campus, including ones in residential colleges, public
-        clusters, and other departmental clusters to ensure that everyone on Yale’s campus always had access to
-        printing.<br><br></div>
-        <div class="title">Math Instructor – Mathnasium
-            <br>
-            August 2015 – August 2018
-            <br>
-        Rancho Santa Margarita, CA</div>
-        <div class="description">Tutored and mentored students in kindergarten through the 12th grade to learn, catch up, and get ahead in
-        math. Taught all math subjects up to and including AP Calculus and AP Statistics.<br><br></div>
-
-        <a href='/resources/resume.pdf'>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href='index.html'>Daniel Ortega's Portfolio</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="aboutme.html">About Me</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="projects.html">Projects</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="work.html">Experience</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="images.html">Images</a>
+        </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row text-center">
+        <div class="col">
+          <h1>Work Experience</h1>
+          <div class="row align-items-center">
+            <div class="col-6 offset-3">
+              <div class="title">
+                <p>Cluster Technician Coordinator – Student Technology Collaborative</p>
+                <p>February 2019 - present</p>
+                <p>Yale University, New Haven, CT</p>
+              </div>
+            </div>
+            <div class="col-3 icon">
+              <img src="images/STC.png">
+            </div>
+          </div>
+          <div class="description">
+            <p>Overseeing all shifts of Cluster Technicians on campus, contacting appropriate resources to resolve computer
+            errors, issuing warnings to Cluster Technicians not fulfilling job requirements, and collaborating daily with
+            other Coordinators to ensure that computer clusters are adequately maintained.</p>
+          </div>
+          <div class="row align-items-center">
+            <div class="col-2 offset-1 icon">
+              <img src="images/Yale.png">
+            </div>
+            <div class="col-6">
+              <div class="title">
+                <p>Teaching Assistant – CS50</p>
+                <p>May 2019 - June 2019</p>
+                <p>Yale University, New Haven, CT</p>
+              </div>
+            </div>
+          </div>
+          <div class="description">
+            <p>Delivered key insights to over thirty students taking CS50 - Introduction to Computer Science - during open
+            office hours held twice a week. Held weekly meetings and lunches related to coursework, and graded
+            problem sets in C, Python, HTML, CSS, and JavaScript.</p>
+          </div>
+          <div class="row align-items-center">
+            <div class="col-6 offset-3">
+              <div class="title">
+                <p>Cluster Technician – Student Technology Collaborative</p>
+                <p>October 2018 - February 2019</p>
+                <p>Yale University, New Haven, CT</p>
+              </div>
+            </div>
+            <div class="col-3 icon">
+              <img src="images/STC.png">
+            </div>
+          </div>
+          <div class="description">
+            <p>Supported and maintained cluster computers on campus, including ones in residential colleges, public
+            clusters, and other departmental clusters to ensure that everyone on Yale's campus always had access to
+            printing.</p>
+          </div>
+          <div class="row align-items-center">
+            <div class="col-3 icon">
+              <img src="images/Mathnasium.png">
+            </div>
+            <div class="col-6">
+              <div class="title">
+                <p>Math Instructor – Mathnasium</p>
+                <p>August 2015 – August 2018</p>
+                <p>Rancho Santa Margarita, CA</p>
+              </div>
+            </div>
+          </div>
+          <div class="description">
+            <p>Tutored and mentored students in kindergarten through the 12th grade to learn, catch up, and get ahead in
+            math. Taught all math subjects up to and including AP Calculus and AP Statistics.</p>
+          </div>
+          <a href='/resources/resume.pdf'>
             <button type="submit">Download my resume</button>
-        </a>
+          </a>
+        </div>
+      </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   </body>
 </html>
