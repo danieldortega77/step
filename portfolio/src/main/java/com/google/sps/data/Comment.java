@@ -7,12 +7,11 @@ public class Comment {
 
   private final String text;
   private final String author;
-  private final Date time;
+  private final Date time = new Date();
 
-  public Comment(String text, String currentauthor, Date time) {
+  public Comment(String text, String author) {
     this.text = text;
     this.author = author;
-    this.time = time;
   }
   
   public String getText() {
