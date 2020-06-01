@@ -12,8 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-async function getGreeting() {
+/**
+ * Fetches comments from the servers and adds them to the DOM.
+ */
+async function getComments() {
   const response = await fetch('/data');
-  const greeting = await response.text();
-  document.getElementById('greeting-container').innerText = greeting;
+  const comments = await response.json();
+  const commentsElement = document.getElementById('comments-container');
+  commentsElement.appendChild(createListElement())
+
+  for (var comment of comments) {
+    console.log(comment)
+  }
 }
