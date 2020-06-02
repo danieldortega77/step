@@ -25,6 +25,7 @@ import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,19 +38,26 @@ public class ListCommentsServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Comment").addSort("time", SortDirection.DESCENDING);
+    int maxComments = getMaxComments(request);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    ArrayList<Comment> comments = new ArrayList<>();
+    List<Comment> comments = new ArrayList<>();
+    int count = 0;
     for (Entity entity : results.asIterable()) {
       String commentText = (String) entity.getProperty("text");
       String commentAuthor = (String) entity.getProperty("author");
-      long commentTimeMS = (long) entity.getProperty("time");
+      // long commentTimeMS = (long) entity.getProperty("time");
+      long commentTimeMS = maxComments;
       Date commentTime = new Date(commentTimeMS);
 
       Comment comment = new Comment(commentText, commentAuthor, commentTime);
       comments.add(comment);
+
+      if (++count == maxComments) {
+        break;
+      }
     }
 
     // Convert the comments to JSON
@@ -60,9 +68,26 @@ public class ListCommentsServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  private String convertToJson(ArrayList comments) {
+  private String convertToJson(List comments) {
     Gson gson = new Gson();
     String json = gson.toJson(comments);
     return json;
+  }
+
+  /** Returns the maximum number of comments entered by the user. */
+  private int getMaxComments(HttpServletRequest request) {
+    // Get the input from the user.
+    String maxCommentsString = request.getParameter("max-comments");
+
+    // Convert the input to an int.
+    int maxComments;
+    try {
+      maxComments = Integer.parseInt(maxCommentsString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + maxCommentsString);
+      return -1;
+    }
+
+    return maxComments;
   }
 }
