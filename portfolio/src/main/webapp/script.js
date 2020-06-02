@@ -26,7 +26,9 @@ async function getComments() {
   }
 }
 
-/** Creates an element containing a comment. */
+/**
+ * Creates an element containing a comment.
+ */
 function createCommentElement(comment) {
   const commentElement = document.createElement('div');
   commentElement.innerHTML = '';
