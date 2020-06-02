@@ -33,7 +33,6 @@ async function getComments() {
 function createCommentElement(comment) {
   const commentElement = document.createElement('div');
   commentElement.innerHTML = '';
-  commentElement.setAttribute("id", comment.id);
 
   commentElement.appendChild(createAnyElement('h5', comment.author));
   commentElement.appendChild(createAnyElement('h6', comment.time));
@@ -46,4 +45,19 @@ function createAnyElement(tag, text) {
   const textElement = document.createElement(tag);
   textElement.innerText = text;
   return textElement;
+}
+
+/**
+ * Deletes all comments from the database.
+ */
+async function deleteComments() {
+  const commentsContainer = document.getElementById('comments-container').value;
+  const response = await fetch('/list-comments?max-comments=' + maxComments);
+  const comments = await response.json();
+  const commentsElement = document.getElementById('comments-container');
+  commentsElement.innerHTML = '';
+
+  for (var comment of comments) {
+    commentsElement.appendChild(createCommentElement(comment))
+  }
 }

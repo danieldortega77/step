@@ -16,7 +16,6 @@ public class Comment {
   }
 
   public Comment(String text, String author, Date time) {
-    this.id = id;
     this.text = text;
     this.author = author;
     this.time = time;
