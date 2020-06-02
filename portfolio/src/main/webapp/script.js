@@ -27,9 +27,9 @@ async function getComments() {
   }
 
   if (commentsElement.innerHTML === '') {
-    document.getElementById("delete-button").style.visibility="hidden";
+    document.getElementById("comment-section").style.visibility="hidden";
   } else {
-    document.getElementById("delete-button").style.visibility="visible";
+    document.getElementById("comment-section").style.visibility="visible";
   }
 }
 
