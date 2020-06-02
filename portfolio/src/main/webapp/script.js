@@ -33,6 +33,7 @@ async function getComments() {
 function createCommentElement(comment) {
   const commentElement = document.createElement('div');
   commentElement.innerHTML = '';
+  commentElement.setAttribute("id", comment.id);
 
   commentElement.appendChild(createAnyElement('h5', comment.author));
   commentElement.appendChild(createAnyElement('h6', comment.time));
