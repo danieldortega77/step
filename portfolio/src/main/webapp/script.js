@@ -23,7 +23,13 @@ async function getComments() {
   commentsElement.innerHTML = '';
 
   for (var comment of comments) {
-    commentsElement.appendChild(createCommentElement(comment))
+    commentsElement.appendChild(createCommentElement(comment));
+  }
+
+  if (commentsElement.innerHTML === '') {
+    document.getElementById("delete-button").style.visibility="hidden";
+  } else {
+    document.getElementById("delete-button").style.visibility="visible";
   }
 }
 
