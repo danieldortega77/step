@@ -51,13 +51,11 @@ function createAnyElement(tag, text) {
  * Deletes all comments from the database.
  */
 async function deleteComments() {
-  const commentsContainer = document.getElementById('comments-container').value;
-  const response = await fetch('/list-comments?max-comments=' + maxComments);
-  const comments = await response.json();
-  const commentsElement = document.getElementById('comments-container');
-  commentsElement.innerHTML = '';
-
-  for (var comment of comments) {
-    commentsElement.appendChild(createCommentElement(comment))
+  var confirmation = confirm("Are you sure you want to delete all comments?");
+  if (confirmation == true) {
+    alert("Ok");
+    return;
+  } else {
+    return;
   }
 }
