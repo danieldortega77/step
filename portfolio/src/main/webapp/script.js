@@ -16,7 +16,8 @@
  * Fetches comments from the servers and adds them to the DOM.
  */
 async function getComments() {
-  const response = await fetch('/list-comments?max-comments=2');
+  const maxComments = document.getElementById('max-comments').value;
+  const response = await fetch('/list-comments?max-comments=' + maxComments);
   const comments = await response.json();
   const commentsElement = document.getElementById('comments-container');
   commentsElement.innerHTML = '';
