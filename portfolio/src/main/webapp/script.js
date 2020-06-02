@@ -22,15 +22,26 @@ async function getComments() {
   commentsElement.innerHTML = '';
 
   for (var comment of comments) {
-    commentsElement.appendChild(createListElement(comment))
+    commentsElement.appendChild(createCommentElement(comment))
   }
 }
 
 /**
- * Creates an <li> element containing text.
+ * Creates an element containing a comment.
  */
-function createListElement(text) {
-  const liElement = document.createElement('li');
-  liElement.innerText = text;
-  return liElement;
+function createCommentElement(comment) {
+  const commentElement = document.createElement('div');
+  commentElement.innerHTML = '';
+
+  commentElement.appendChild(createAnyElement('h5', comment.author));
+  commentElement.appendChild(createAnyElement('h6', comment.time));
+  commentElement.appendChild(createAnyElement('p',  comment.text));
+
+  return commentElement;
+}
+
+function createAnyElement(tag, text) {
+  const textElement = document.createElement(tag);
+  textElement.innerText = text;
+  return textElement;
 }

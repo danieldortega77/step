@@ -7,6 +7,7 @@ body {
   background-repeat: repeat;
   font: times, georgia, sans-serif;
   padding-top: 100px;
+  word-wrap: break-word;
 }
 
 #me {
@@ -39,6 +40,10 @@ body {
 .description {
   margin-bottom: 0.5em;
   text-align: left;
+}
+
+.row {
+  margin-bottom: 1em;
 }
 
 button {

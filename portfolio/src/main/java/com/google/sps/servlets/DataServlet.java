@@ -14,9 +14,11 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.data.Comment;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,14 +28,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private ArrayList<String> comments;
+  private ArrayList<Comment> comments;
 
   @Override
   public void init() {
-    comments = new ArrayList<String>();
-    comments.add("What a great portfolio!");
-    comments.add("Looks great. I like the theme.");
-    comments.add("Daniel Ortega seems like a very cool person.");
+    comments = new ArrayList<Comment>();
   }
 
   @Override
@@ -44,6 +43,35 @@ public class DataServlet extends HttpServlet {
     // Send the JSON as the response
     response.setContentType("application/json;");
     response.getWriter().println(json);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String commentText = getCommentText(request);
+    String commentAuthor = getCommentAuthor(request);
+    Comment comment = new Comment(commentText, commentAuthor);
+
+    comments.add(comment);
+
+    response.sendRedirect("/index.html");
+  }
+
+  /** Returns the text entered by the user. */
+  private String getCommentText(HttpServletRequest request) {
+    return request.getParameter("comment-text");
+  }
+
+  /** Returns the author entered by the user, or "Anonymous" if left blank. */
+  private String getCommentAuthor(HttpServletRequest request) {
+    // Get the input from the form.
+    String author = request.getParameter("comment-author");
+    
+    // Account for a blank response.
+    if (author.equals("")) {
+      return "Anonymous";
+    }
+
+    return author;
   }
 
   private String convertToJson(ArrayList comments) {

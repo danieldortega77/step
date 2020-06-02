@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="getComments()">
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
       <a class="navbar-brand" href='index.html'>Daniel Ortega's Portfolio</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,12 +50,6 @@
           <p>I'm glad you're here. I'm Daniel Ortega, a STEP Intern at Google for Summer 2020.</p>
         </div>
       </div>
-      <div class="row text-center">
-        <div class="col">
-          <button onclick="getComments()">Fetch comments</button>
-          <div id="comments-container"></div>
-        </div>
-      </div>
       <div class="row text-center justify-content-center align-items-center icon">
         <div class="col-2 col-md-1">
           <a href="https://www.linkedin.com/in/danielortega77/">
@@ -72,6 +66,21 @@
             <img src="/images/Facebook.png">
           </a>
         </div>
+      </div>
+      <div class="row text-center">
+        <div class="col">
+          <label for="comment-text">Comment:</label><br>
+          <textarea id="comment-text" name="comment-text" form="comment-form" required></textarea>
+          <form action="/data" method="POST" id="comment-form">
+            <label for="comment-author">Your Name <br> (Leave blank to publish anonymously):</label><br>
+            <input type="text" id="comment-author" name="comment-author">
+            <br><br>
+            <input type="submit"/>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6" id="comments-container"></div>
       </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
