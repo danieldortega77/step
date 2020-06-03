@@ -12,6 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+function loadElements() {
+  htmlInject('navbar.html', 'navbar-container');
+  htmlInject('socials.html', 'socials-container');
+  getComments();
+}
+
+async function htmlInject(templatePath, targetID) {
+  const target = document.getElementById(targetID);
+  if (target) {
+    const response = await fetch(templatePath);
+    const htmlText = await response.text();
+    target.innerHTML = htmlText;
+  }
+}
+
 /**
  * Fetches comments from the servers and adds them to the DOM.
  */
