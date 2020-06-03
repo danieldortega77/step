@@ -15,9 +15,10 @@
 /**
  * Loads all elements of the page that are factored out originally.
  */
-function loadElements() {
-  htmlInject('navbar.html', 'navbar-container');
-  htmlInject('socials.html', 'socials-container');
+async function loadElements() {
+  await htmlInject('navbar.html', 'navbar-container');
+  await htmlInject('socials.html', 'socials-container');
+  await htmlInject('comments.html', 'comments-container');
   getComments();
 }
 
@@ -40,7 +41,7 @@ async function getComments() {
   const maxComments = document.getElementById('max-comments').value;
   const response = await fetch('/list-comments?max-comments=' + maxComments);
   const comments = await response.json();
-  const commentsElement = document.getElementById('comments-container');
+  const commentsElement = document.getElementById('comments-list');
   commentsElement.innerHTML = '';
 
   for (var comment of comments) {

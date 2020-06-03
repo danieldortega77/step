@@ -28,28 +28,7 @@
       </div>
     </div>
     <div id="socials-container"></div>
-    <div class="container">
-      <div class="row text-center">
-        <div class="col">
-          <label for="comment-text">Comment:</label><br>
-          <textarea id="comment-text" name="comment-text" form="comment-form" required></textarea>
-          <form action="/new-comment" method="POST" id="comment-form">
-            <label for="comment-author">Your Name <br> (Leave blank to publish anonymously):</label><br>
-            <input type="text" id="comment-author" name="comment-author">
-            <br><br>
-            <input type="submit"/>
-          </form>
-        </div>
-      </div>
-      <div class="row" id="comment-section">
-        <div class="col-md-6">
-          <label for="max-comments">Number of comments:</label>
-          <input type="number" id="max-comments" name="max-comments" min="1" max="100" value="5" onchange="loadElements()"/>
-          <div id="comments-container"></div>
-          <input type="submit" id="delete-button" value="Delete all comments" onclick="deleteComments()"/>
-        </div>
-      </div>
-    </div>
+    <div id="comments-container"></div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
