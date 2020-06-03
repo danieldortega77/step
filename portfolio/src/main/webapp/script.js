@@ -15,8 +15,10 @@
 /**
  * Loads all elements of the page that are factored out originally.
  */
-async function loadElements() {
+async function loadElements(page) {
   await htmlInject('navbar.html', 'navbar-container');
+  var navbarOptions = document.querySelectorAll('.nav-item')
+  navbarOptions[page].classList.add("active");
   await htmlInject('socials.html', 'socials-container');
   await htmlInject('comments.html', 'comments-container');
   getComments();
