@@ -41,7 +41,9 @@ public class NewCommentServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
 
-    response.sendRedirect("/index.html");
+    String referer = request.getHeader("Referer");
+
+    response.sendRedirect(referer);
   }
 
   /** Returns the text entered by the user. */
