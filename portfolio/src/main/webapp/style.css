@@ -62,3 +62,7 @@ button:hover {
   background-color: skyblue;
   color: white;
 }
+
+h5 {
+  text-shadow: 2px 2px 3px rgb(132, 179, 249);
+}
