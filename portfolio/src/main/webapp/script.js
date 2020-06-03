@@ -12,12 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/**
+ * Loads all elements of the page that are factored out originally.
+ */
 function loadElements() {
   htmlInject('navbar.html', 'navbar-container');
   htmlInject('socials.html', 'socials-container');
   getComments();
 }
 
+/**
+ * Replaces the inner HTML of the targetID element with the HTML in templatePath.
+ */
 async function htmlInject(templatePath, targetID) {
   const target = document.getElementById(targetID);
   if (target) {
