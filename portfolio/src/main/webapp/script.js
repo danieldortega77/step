@@ -37,6 +37,17 @@ async function htmlInject(templatePath, targetID) {
 }
 
 /**
+ * Updates the comment section after a new comment is submitted
+ */
+function updateCommentSection() {
+  // Wait for the form to submit before resetting
+  setTimeout(function(){ 
+    document.getElementById("comment-form").reset();
+    getComments();
+    }, 1000);
+}
+
+/**
  * Fetches comments from the servers and adds them to the DOM.
  */
 async function getComments() {
