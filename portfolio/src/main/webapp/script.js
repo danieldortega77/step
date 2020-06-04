@@ -22,7 +22,7 @@ async function getComments() {
   const commentsElement = document.getElementById('comments-container');
   commentsElement.innerHTML = '';
 
-  for (var comment of comments) {
+  for (const comment of comments) {
     commentsElement.appendChild(createCommentElement(comment))
   }
 }
@@ -51,12 +51,9 @@ function createAnyElement(tag, text) {
  * Deletes all comments from the database.
  */
 async function deleteComments() {
-  var confirmation = confirm("Are you sure you want to delete all comments?");
-  if (confirmation == true) {
+  const confirmation = confirm("Are you sure you want to delete all comments?");
+  if (confirmation) {
     const response = await fetch('/delete-comments', {method: 'POST'});
     getComments();
-    return;
-  } else {
-    return;
   }
 }
