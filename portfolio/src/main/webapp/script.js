@@ -52,7 +52,7 @@ function createAnyElement(tag, text) {
  */
 async function deleteComments() {
   var confirmation = confirm("Are you sure you want to delete all comments?");
-  if (confirmation == true) {
+  if (confirmation) {
     const response = await fetch('/delete-comments', {method: 'POST'});
     getComments();
     return;
