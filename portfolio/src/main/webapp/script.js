@@ -16,12 +16,13 @@
  * Fetches comments from the servers and adds them to the DOM.
  */
 async function getComments() {
-  const response = await fetch('/data');
+  const maxComments = document.getElementById('max-comments').value;
+  const response = await fetch('/list-comments?max-comments=' + maxComments);
   const comments = await response.json();
   const commentsElement = document.getElementById('comments-container');
   commentsElement.innerHTML = '';
 
-  for (var comment of comments) {
+  for (const comment of comments) {
     commentsElement.appendChild(createCommentElement(comment))
   }
 }
@@ -44,4 +45,15 @@ function createAnyElement(tag, text) {
   const textElement = document.createElement(tag);
   textElement.innerText = text;
   return textElement;
+}
+
+/**
+ * Deletes all comments from the database.
+ */
+async function deleteComments() {
+  const confirmation = confirm("Are you sure you want to delete all comments?");
+  if (confirmation) {
+    const response = await fetch('/delete-comments', {method: 'POST'});
+    getComments();
+  }
 }

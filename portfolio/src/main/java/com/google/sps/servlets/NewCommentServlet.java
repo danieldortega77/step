@@ -14,51 +14,47 @@
 
 package com.google.sps.servlets;
 
-import com.google.sps.data.Comment;
-import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
-
-  private ArrayList<Comment> comments;
-
-  @Override
-  public void init() {
-    comments = new ArrayList<Comment>();
-  }
-
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Convert the comments to JSON
-    String json = convertToJson(comments);
-
-    // Send the JSON as the response
-    response.setContentType("application/json;");
-    response.getWriter().println(json);
-  }
+/** Servlet that adds a new comment to Datastore. */
+@WebServlet("/new-comment")
+public class NewCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String commentText = getCommentText(request);
     String commentAuthor = getCommentAuthor(request);
-    Comment comment = new Comment(commentText, commentAuthor);
+    long commentTime = System.currentTimeMillis();
 
-    comments.add(comment);
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("text", commentText);
+    commentEntity.setProperty("author", commentAuthor);
+    commentEntity.setProperty("time", commentTime);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
 
     response.sendRedirect("/index.html");
   }
 
   /** Returns the text entered by the user. */
   private String getCommentText(HttpServletRequest request) {
-    return request.getParameter("comment-text");
+    // Get the input from the form.
+    String text = request.getParameter("comment-text");
+    
+    // Account for a blank response.
+    if (text == null) {
+      return "";
+    }
+
+    return text;
   }
 
   /** Returns the author entered by the user, or "Anonymous" if left blank. */
@@ -67,16 +63,10 @@ public class DataServlet extends HttpServlet {
     String author = request.getParameter("comment-author");
     
     // Account for a blank response.
-    if (author.equals("")) {
+    if (author == null || author.equals("")) {
       return "Anonymous";
     }
 
     return author;
-  }
-
-  private String convertToJson(ArrayList comments) {
-    Gson gson = new Gson();
-    String json = gson.toJson(comments);
-    return json;
   }
 }
