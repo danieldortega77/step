@@ -50,32 +50,14 @@ public class NewCommentServlet extends HttpServlet {
 
   /** Returns the text entered by the user. */
   private String getCommentText(HttpServletRequest request) {
-    return request.getParameter("comment-text");
-  }
-
-  /** Returns the author entered by the user, or the user's email if left blank. */
-  private String getCommentAuthorID(HttpServletRequest request) {
-    UserService userService = UserServiceFactory.getUserService();
-    String id = userService.getCurrentUser().getUserId();
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query =
-        new Query("UserInfo")
-            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
-    PreparedQuery results = datastore.prepare(query);
-    Entity entity = results.asSingleEntity();
+    // Get the input from the form.
+    String text = request.getParameter("comment-text");
 
     // Account for a blank response.
-    if (entity == null) {
-      String email = userService.getCurrentUser().getEmail();
-      if (email == null) {
-        return "";
-      } else {
-        return email;
-      }
+    if (text == null) {
+      return "";
     }
 
-    String nickname = (String) entity.getProperty("id");
-    return nickname;
+    return text;
   }
 }

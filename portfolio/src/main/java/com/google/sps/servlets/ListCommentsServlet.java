@@ -46,10 +46,8 @@ public class ListCommentsServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     List<Comment> comments = new ArrayList<>();
-    int count = 0;
     for (Entity entity : results.asIterable()) {
       String commentText = (String) entity.getProperty("text");
-      // String commentAuthor = (String) entity.getProperty("author");
       String id = (String) entity.getProperty("author");
       String commentAuthor = getNickname(id);
       long commentTimeMS = (long) entity.getProperty("time");
@@ -58,7 +56,7 @@ public class ListCommentsServlet extends HttpServlet {
       Comment comment = new Comment(commentText, commentAuthor, commentTime);
       comments.add(comment);
 
-      if (++count == maxComments) {
+      if (comments.size() == maxComments) {
         break;
       }
     }

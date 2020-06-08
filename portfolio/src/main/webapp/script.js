@@ -16,9 +16,13 @@
  * Loads all elements of the page that are factored out originally.
  */
 async function loadElements(page) {
+  // Insert the navbar
   await htmlInject('navbar.html', 'navbar-container');
   var navbarOptions = document.querySelectorAll('.nav-item')
-  navbarOptions[page].classList.add("active");
+  // Select and then highlight the current page's name in the navbar
+  navbarOptions[page].classList.add('active');
+  
+  // Insert social media and comment section, if present in page
   await htmlInject('socials.html', 'socials-container');
   await htmlInject('comments.html', 'comments-container');
 
@@ -26,11 +30,11 @@ async function loadElements(page) {
   const userInfo = await loginResponse.json();
 
   if (!(userInfo.isLoggedIn)) {
-    document.getElementById("comment-submission").innerHTML = '';
-    document.getElementById("dropdown-nickname").remove();
-    document.getElementById("dropdown-logout").remove();
+    document.getElementById('comment-submission').innerHTML = '';
+    document.getElementById('dropdown-nickname').remove();
+    document.getElementById('dropdown-logout').remove();
   } else {
-    document.getElementById("dropdown-login").remove();
+    document.getElementById('dropdown-login').remove();
     displayNickname();
   }
 
@@ -55,7 +59,7 @@ async function htmlInject(templatePath, targetID) {
 function updateCommentSection() {
   // Wait for the form to submit before resetting
   setTimeout(function(){ 
-    document.getElementById("comment-form").reset();
+    document.getElementById('comment-form').reset();
     getComments();
     }, 1000);
 }
@@ -75,9 +79,9 @@ async function getComments() {
   commentsElement.innerHTML = '';
 
   if (comments.length == 0) {
-    document.getElementById("comment-section").style.visibility="hidden";
+    document.getElementById('comment-section').style.visibility = 'hidden';
   } else {
-    document.getElementById("comment-section").style.visibility="visible";
+    document.getElementById('comment-section').style.visibility = 'visible';
     for (var comment of comments) {
       commentsElement.appendChild(createCommentElement(comment));
     }
@@ -108,24 +112,21 @@ function createAnyElement(tag, text) {
  * Deletes all comments from the database.
  */
 async function deleteComments() {
-  var confirmation = confirm("Are you sure you want to delete all comments?");
-  if (confirmation == true) {
+  const confirmation = confirm('Are you sure you want to delete all comments?');
+  if (confirmation) {
     const response = await fetch('/delete-comments', {method: 'POST'});
     getComments();
-    return;
-  } else {
-    return;
   }
 }
 
 /**
- * Displays user's nickname on the "change nickname" webpage
+ * Displays user's nickname on the 'change nickname' webpage
  */
 async function displayNickname() {
   const response = await fetch('/nickname');
   const nickname = await response.text();
   const element = document.getElementById('nickname-greeting');
   if (element) {
-    element.innerHTML = "Your current nickname is " + nickname + ".";
+    element.innerHTML = 'Your current nickname is ' + nickname + '.';
   }
 }
