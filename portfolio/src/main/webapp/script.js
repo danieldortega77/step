@@ -19,11 +19,17 @@ async function getComments() {
   const maxComments = document.getElementById('max-comments').value;
   const response = await fetch('/list-comments?max-comments=' + maxComments);
   const comments = await response.json();
-  const commentsElement = document.getElementById('comments-container');
+  const commentsElement = document.getElementById('comments-list');
   commentsElement.innerHTML = '';
 
-  for (const comment of comments) {
-    commentsElement.appendChild(createCommentElement(comment))
+  for (var comment of comments) {
+    commentsElement.appendChild(createCommentElement(comment));
+  }
+
+  if (commentsElement.innerHTML === '') {
+    document.getElementById('comment-section').style.visibility = 'hidden';
+  } else {
+    document.getElementById('comment-section').style.visibility = 'visible';
   }
 }
 
@@ -51,7 +57,7 @@ function createAnyElement(tag, text) {
  * Deletes all comments from the database.
  */
 async function deleteComments() {
-  const confirmation = confirm("Are you sure you want to delete all comments?");
+  const confirmation = confirm('Are you sure you want to delete all comments?');
   if (confirmation) {
     const response = await fetch('/delete-comments', {method: 'POST'});
     getComments();
