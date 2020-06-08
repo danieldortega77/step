@@ -21,6 +21,14 @@ async function loadElements(page) {
   navbarOptions[page].classList.add("active");
   await htmlInject('socials.html', 'socials-container');
   await htmlInject('comments.html', 'comments-container');
+
+  const loginResponse = await fetch('/login');
+  const userInfo = await loginResponse.json();
+
+  if (!(userInfo.isLoggedIn)) {
+    document.getElementById("comment-submission").innerHTML = '';
+  }
+
   getComments();
 }
 
@@ -57,14 +65,13 @@ async function getComments() {
   const commentsElement = document.getElementById('comments-list');
   commentsElement.innerHTML = '';
 
-  for (var comment of comments) {
-    commentsElement.appendChild(createCommentElement(comment));
-  }
-
-  if (commentsElement.innerHTML === '') {
+  if (comments.length == 0) {
     document.getElementById("comment-section").style.visibility="hidden";
   } else {
     document.getElementById("comment-section").style.visibility="visible";
+    for (var comment of comments) {
+      commentsElement.appendChild(createCommentElement(comment));
+    }
   }
 }
 
@@ -100,10 +107,4 @@ async function deleteComments() {
   } else {
     return;
   }
-}
-
-async function isLoggedIn() {
-  const response = await fetch('/login');
-  const htmlText = await response.bool();
-  return htmlText === 'true';
 }
