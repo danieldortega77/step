@@ -51,9 +51,9 @@ async function getComments() {
   }
 
   if (commentsElement.innerHTML === '') {
-    document.getElementById("comment-section").style.visibility="hidden";
+    document.getElementById('comment-section').style.visibility = 'hidden';
   } else {
-    document.getElementById("comment-section").style.visibility="visible";
+    document.getElementById('comment-section').style.visibility = 'visible';
   }
 }
 
@@ -81,7 +81,7 @@ function createAnyElement(tag, text) {
  * Deletes all comments from the database.
  */
 async function deleteComments() {
-  const confirmation = confirm("Are you sure you want to delete all comments?");
+  const confirmation = confirm('Are you sure you want to delete all comments?');
   if (confirmation) {
     const response = await fetch('/delete-comments', {method: 'POST'});
     getComments();
