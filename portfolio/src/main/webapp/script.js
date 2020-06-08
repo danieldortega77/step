@@ -14,13 +14,6 @@
 
 /**
  * Loads all elements of the page that are factored out originally.
-<<<<<<< HEAD
- */
-async function loadElements(page) {
-  await htmlInject('navbar.html', 'navbar-container');
-  var navbarOptions = document.querySelectorAll('.nav-item')
-  navbarOptions[page].classList.add("active");
-=======
  * 'page' is the index of the current page according to the order in the navbar.
  */
 async function loadElements(page) {
@@ -31,7 +24,6 @@ async function loadElements(page) {
   navbarOptions[page].classList.add("active");
 
   // Insert social media and comment section, if present in page
->>>>>>> master
   await htmlInject('socials.html', 'socials-container');
   await htmlInject('comments.html', 'comments-container');
   getComments();
@@ -50,7 +42,6 @@ async function htmlInject(templatePath, targetID) {
 }
 
 /**
-<<<<<<< HEAD
  * Updates the comment section after a new comment is submitted
  */
 function updateCommentSection() {
@@ -62,8 +53,6 @@ function updateCommentSection() {
 }
 
 /**
-=======
->>>>>>> master
  * Fetches comments from the servers and adds them to the DOM.
  */
 async function getComments() {
@@ -78,15 +67,9 @@ async function getComments() {
   }
 
   if (commentsElement.innerHTML === '') {
-<<<<<<< HEAD
-    document.getElementById("comment-section").style.visibility="hidden";
-  } else {
-    document.getElementById("comment-section").style.visibility="visible";
-=======
     document.getElementById('comment-section').style.visibility = 'hidden';
   } else {
     document.getElementById('comment-section').style.visibility = 'visible';
->>>>>>> master
   }
 }
 
