@@ -27,6 +27,10 @@ async function loadElements(page) {
 
   if (!(userInfo.isLoggedIn)) {
     document.getElementById("comment-submission").innerHTML = '';
+    document.getElementById("dropdown-nickname").remove();
+    document.getElementById("dropdown-logout").remove();
+  } else {
+    document.getElementById("dropdown-login").remove();
   }
 
   getComments();

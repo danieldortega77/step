@@ -14,39 +14,40 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.gson.Gson;
-import com.google.sps.data.UserInfo;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/nickname")
+public class NicknameServlet extends HttpServlet {
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("application/json;");
-
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
-
-    boolean isLoggedIn = userService.isUserLoggedIn();
-    String email;
-    if (isLoggedIn) {
-      email = userService.getCurrentUser().getEmail();
-    } else {
-      email = null;
+    if (!userService.isUserLoggedIn()) {
+      response.sendRedirect("/index.html");
+      return;
     }
 
-    UserInfo userInfo = new UserInfo(email, isLoggedIn);
+    String nickname = request.getParameter("nickname");
+    String id = userService.getCurrentUser().getUserId();
 
-    Gson gson = new Gson();
-    String json = gson.toJson(userInfo);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity entity = new Entity("UserInfo", id);
+    entity.setProperty("id", id);
+    entity.setProperty("nickname", nickname);
+    datastore.put(entity);
 
-    // Send the JSON as the response
-    response.getWriter().println(json);
+    response.sendRedirect("/nickname.html");
   }
 }

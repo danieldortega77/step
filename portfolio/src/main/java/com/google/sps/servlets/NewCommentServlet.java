@@ -17,6 +17,8 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
@@ -31,8 +33,10 @@ public class NewCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
+
     String commentText = getCommentText(request);
-    String commentAuthor = getCommentAuthor(request);
+    String commentAuthor = userService.getCurrentUser().getUserId();
     long commentTime = System.currentTimeMillis();
 
     Entity commentEntity = new Entity("Comment");
@@ -50,21 +54,41 @@ public class NewCommentServlet extends HttpServlet {
   }
 
   /** Returns the author entered by the user, or the user's email if left blank. */
-  private String getCommentAuthor(HttpServletRequest request) {
-    // Get the input from the form.
-    String author = request.getParameter("comment-author");
+  private String getCommentAuthorID(HttpServletRequest request) {
+    // // Get the input from the form.
+    // String author = request.getParameter("comment-author");
     
-    // Account for a blank response.
-    if (author.equals("")) {
-      UserService userService = UserServiceFactory.getUserService();
+    // // Account for a blank response.
+    // if (author.equals("")) {
+    //   UserService userService = UserServiceFactory.getUserService();
+    //   String email = userService.getCurrentUser().getEmail();
+    //   if (email == null) {
+    //     return "Anonymous";
+    //   } else {
+    //     return email;
+    //   }
+    // }
+    UserService userService = UserServiceFactory.getUserService();
+    String id = userService.getCurrentUser().getUserId();
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query =
+        new Query("UserInfo")
+            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
+    PreparedQuery results = datastore.prepare(query);
+    Entity entity = results.asSingleEntity();
+
+    // Account for a black response.
+    if (entity == null) {
       String email = userService.getCurrentUser().getEmail();
       if (email == null) {
-        return "Anonymous";
+        return "";
       } else {
         return email;
       }
     }
 
-    return author;
+    String nickname = (String) entity.getProperty("id");
+    return nickname;
   }
 }
