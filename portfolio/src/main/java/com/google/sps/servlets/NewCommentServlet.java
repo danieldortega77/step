@@ -65,7 +65,7 @@ public class NewCommentServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     Entity entity = results.asSingleEntity();
 
-    // Account for a black response.
+    // Account for a blank response.
     if (entity == null) {
       String email = userService.getCurrentUser().getEmail();
       if (email == null) {

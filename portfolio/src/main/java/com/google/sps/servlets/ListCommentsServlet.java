@@ -102,7 +102,7 @@ public class ListCommentsServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     Entity entity = results.asSingleEntity();
 
-    // Account for a black response.
+    // Account for a blank response.
     if (entity == null) {
       UserService userService = UserServiceFactory.getUserService();
       String email = userService.getCurrentUser().getEmail();

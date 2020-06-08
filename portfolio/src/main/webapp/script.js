@@ -31,6 +31,7 @@ async function loadElements(page) {
     document.getElementById("dropdown-logout").remove();
   } else {
     document.getElementById("dropdown-login").remove();
+    displayNickname();
   }
 
   getComments();
@@ -63,7 +64,11 @@ function updateCommentSection() {
  * Fetches comments from the servers and adds them to the DOM.
  */
 async function getComments() {
-  const maxComments = document.getElementById('max-comments').value;
+  const maxCommentsElement = document.getElementById('max-comments');
+  if (!maxCommentsElement) {
+    return;
+  }
+  const maxComments = maxCommentsElement.value;
   const response = await fetch('/list-comments?max-comments=' + maxComments);
   const comments = await response.json();
   const commentsElement = document.getElementById('comments-list');
@@ -110,5 +115,17 @@ async function deleteComments() {
     return;
   } else {
     return;
+  }
+}
+
+/**
+ * Displays user's nickname on the "change nickname" webpage
+ */
+async function displayNickname() {
+  const response = await fetch('/nickname');
+  const nickname = await response.text();
+  const element = document.getElementById('nickname-greeting');
+  if (element) {
+    element.innerHTML = "Your current nickname is " + nickname + ".";
   }
 }

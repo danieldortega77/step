@@ -32,6 +32,18 @@ import javax.servlet.http.HttpServletResponse;
 public class NicknameServlet extends HttpServlet {
 
   @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("text/html");
+    UserService userService = UserServiceFactory.getUserService();
+    if (!userService.isUserLoggedIn()) {
+      response.sendRedirect("/index.html");
+      return;
+    }
+    String id = userService.getCurrentUser().getUserId();
+    response.getWriter().println(getNickname(id));
+  }
+
+  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
     if (!userService.isUserLoggedIn()) {
@@ -48,6 +60,29 @@ public class NicknameServlet extends HttpServlet {
     entity.setProperty("nickname", nickname);
     datastore.put(entity);
 
-    response.sendRedirect("/index.html");
+    response.sendRedirect("/nickname.html");
+  }
+
+  private String getNickname(String id) {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query =
+        new Query("UserInfo")
+            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
+    PreparedQuery results = datastore.prepare(query);
+    Entity entity = results.asSingleEntity();
+
+    // Account for a blank response.
+    if (entity == null) {
+      UserService userService = UserServiceFactory.getUserService();
+      String email = userService.getCurrentUser().getEmail();
+      if (email == null) {
+        return "";
+      } else {
+        return email;
+      }
+    }
+
+    String nickname = (String) entity.getProperty("nickname");
+    return nickname;
   }
 }
