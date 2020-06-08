@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row text-center">
+    <div class="col">
+      <label for="comment-text">Comment:</label><br>
+      <textarea id="comment-text" name="comment-text" form="comment-form" required></textarea>
+      <form action="/new-comment" method="POST" id="comment-form">
+        <label for="comment-author">Your Name <br> (Leave blank to publish anonymously):</label><br>
+        <input type="text" id="comment-author" name="comment-author">
+        <br><br>
+        <input type="submit"/>
+      </form>
+    </div>
+  </div>
+  <div class="row" id="comment-section">
+    <div class="col-md-6">
+      <label for="max-comments">Number of comments:</label>
+      <input type="number" id="max-comments" name="max-comments" min="1" max="100" value="5" onchange="getComments()"/>
+      <div id="comments-list"></div>
+      <input type="submit" id="delete-button" value="Delete all comments" onclick="deleteComments()"/>
+    </div>
+  </div>
+</div>

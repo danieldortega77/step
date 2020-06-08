@@ -8,32 +8,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="script.js"></script>
   </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href='index.html'>Daniel Ortega's Portfolio</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="index.html">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="aboutme.html">About Me</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="projects.html">Projects</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="work.html">Experience</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="images.html">Images</a>
-        </li>
-        </ul>
-      </div> 
-    </nav>
+  <body onload="loadElements(4)">
+    <div id="navbar-container"></div>
     <div class="container">
       <div class="row text-center">
         <div class="col">
@@ -58,6 +34,13 @@
           <p>Rosie is a rescue found with puppies who were all adopted before her.</p>
           <a href="images/Rosie2.jpg"><img src="images/Rosie2.jpg" alt="Rosie sleeping"/></a>
           <p>It seems she found a happy home for herself!</p>
+        </div>
+      </div>
+    </div>
+    <div id="comments-container">
+      <div class="row text-center">
+        <div class="col">
+          <h4>Loading comments...</h4>
         </div>
       </div>
     </div>

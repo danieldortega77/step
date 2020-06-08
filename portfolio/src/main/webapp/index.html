@@ -8,32 +8,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="script.js"></script>
   </head>
-  <body onload="getComments()">
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href='index.html'>Daniel Ortega's Portfolio</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="index.html">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="aboutme.html">About Me</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="projects.html">Projects</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="work.html">Experience</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="images.html">Images</a>
-        </li>
-        </ul>
-      </div>
-    </nav>
+  <body onload="loadElements(0)">
+    <div id="navbar-container"></div>
     <div class="container">
       <div class="row text-center">
         <div class="col">
@@ -50,41 +26,18 @@
           <p>I'm glad you're here. I'm Daniel Ortega, a STEP Intern at Google for Summer 2020.</p>
         </div>
       </div>
-      <div class="row text-center justify-content-center align-items-center icon">
-        <div class="col-2 col-md-1">
-          <a href="https://www.linkedin.com/in/danielortega77/">
-            <img src="/images/LinkedIn.png">
-          </a>
-        </div>
-        <div class="col-2 col-md-1">
-          <a href="https://www.instagram.com/daniel.d.o/">
-            <img src="/images/Instagram.png">
-          </a>
-        </div>
-        <div class="col-2 col-md-1">
-          <a href="https://www.facebook.com/profile.php?id=100025246023927">
-            <img src="/images/Facebook.png">
-          </a>
+    </div>
+    <div class="container">
+      <div class="row text-center">
+        <div class="offset-3 col-6">
+          <div id="socials-container"></div>
         </div>
       </div>
+    </div>
+    <div id="comments-container">
       <div class="row text-center">
         <div class="col">
-          <label for="comment-text">Comment:</label><br>
-          <textarea id="comment-text" name="comment-text" form="comment-form" required></textarea>
-          <form action="/new-comment" method="POST" id="comment-form">
-            <label for="comment-author">Your Name <br> (Leave blank to publish anonymously):</label><br>
-            <input type="text" id="comment-author" name="comment-author">
-            <br><br>
-            <input type="submit"/>
-          </form>
-        </div>
-      </div>
-      <div class="row" id="comment-section">
-        <div class="col-md-6">
-          <label for="max-comments">Number of comments:</label>
-          <input type="number" id="max-comments" name="max-comments" min="1" max="100" value="5" onchange="getComments()"/>
-          <div id="comments-container"></div>
-          <input type="submit" id="delete-button" value="Delete all comments" onclick="deleteComments()"/>
+          <h4>Loading comments...</h4>
         </div>
       </div>
     </div>

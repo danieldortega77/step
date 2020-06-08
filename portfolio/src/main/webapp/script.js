@@ -13,6 +13,35 @@
 // limitations under the License.
 
 /**
+ * Loads all elements of the page that are factored out originally.
+ * 'page' is the index of the current page according to the order in the navbar.
+ */
+async function loadElements(page) {
+  // Insert the navbar
+  await htmlInject('navbar.html', 'navbar-container');
+  var navbarOptions = document.querySelectorAll('.nav-item')
+  // Select and then highlight the current page's name in the navbar
+  navbarOptions[page].classList.add("active");
+
+  // Insert social media and comment section, if present in page
+  await htmlInject('socials.html', 'socials-container');
+  await htmlInject('comments.html', 'comments-container');
+  getComments();
+}
+
+/**
+ * Replaces the inner HTML of the targetID element with the HTML in templatePath.
+ */
+async function htmlInject(templatePath, targetID) {
+  const target = document.getElementById(targetID);
+  if (target) {
+    const response = await fetch(templatePath);
+    const htmlText = await response.text();
+    target.innerHTML = htmlText;
+  }
+}
+
+/**
  * Fetches comments from the servers and adds them to the DOM.
  */
 async function getComments() {
