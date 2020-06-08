@@ -57,7 +57,12 @@ public class NewCommentServlet extends HttpServlet {
     // Account for a blank response.
     if (author.equals("")) {
       UserService userService = UserServiceFactory.getUserService();
-      return userService.getCurrentUser().getEmail();
+      String email = userService.getCurrentUser().getEmail();
+      if (email == null) {
+        return "Anonymous";
+      } else {
+        return email;
+      }
     }
 
     return author;
