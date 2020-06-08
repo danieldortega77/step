@@ -16,9 +16,13 @@
  * Loads all elements of the page that are factored out originally.
  */
 async function loadElements(page) {
+  // Insert the navbar
   await htmlInject('navbar.html', 'navbar-container');
   var navbarOptions = document.querySelectorAll('.nav-item')
+  // Select and then highlight the current page's name in the navbar
   navbarOptions[page].classList.add("active");
+
+  // Insert social media and comment section, if present in page
   await htmlInject('socials.html', 'socials-container');
   await htmlInject('comments.html', 'comments-container');
   getComments();
