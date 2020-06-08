@@ -101,3 +101,9 @@ async function deleteComments() {
     return;
   }
 }
+
+async function isLoggedIn() {
+  const response = await fetch('/login');
+  const htmlText = await response.bool();
+  return htmlText === 'true';
+}

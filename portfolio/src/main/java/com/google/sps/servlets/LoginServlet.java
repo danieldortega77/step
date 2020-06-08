@@ -16,33 +16,40 @@ package com.google.sps.servlets;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gson.Gson;
+import com.google.sps.data.UserInfo;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/")
-public class HomeServlet extends HttpServlet {
+@WebServlet("/login")
+public class LoginServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html");
+    response.setContentType("application/json;");
 
     UserService userService = UserServiceFactory.getUserService();
-    if (userService.isUserLoggedIn()) {
-      String userEmail = userService.getCurrentUser().getEmail();
-      String urlToRedirectToAfterUserLogsOut = "/";
-      String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
 
-      response.getWriter().println("<p>Hello " + userEmail + "!</p>");
-      response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
+    boolean isLoggedIn = userService.isUserLoggedIn();
+    String email;
+    if (isLoggedIn) {
+      email = userService.getCurrentUser().getEmail();
     } else {
-      String urlToRedirectToAfterUserLogsIn = "/";
-      String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
-
-      response.getWriter().println("<p>Hello stranger.</p>");
-      response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
+      email = null;
     }
+
+    UserInfo userInfo = new UserInfo(email, isLoggedIn);
+
+    // /_ah/logout?continue=%2Findex.html
+    // /_ah/login?continue=%2Findex.html
+
+    Gson gson = new Gson();
+    String json = gson.toJson(userInfo);
+
+    // Send the JSON as the response
+    response.getWriter().println(json);
   }
 }
