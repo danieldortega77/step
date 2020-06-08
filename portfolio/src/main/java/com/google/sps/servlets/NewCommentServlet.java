@@ -55,19 +55,6 @@ public class NewCommentServlet extends HttpServlet {
 
   /** Returns the author entered by the user, or the user's email if left blank. */
   private String getCommentAuthorID(HttpServletRequest request) {
-    // // Get the input from the form.
-    // String author = request.getParameter("comment-author");
-    
-    // // Account for a blank response.
-    // if (author.equals("")) {
-    //   UserService userService = UserServiceFactory.getUserService();
-    //   String email = userService.getCurrentUser().getEmail();
-    //   if (email == null) {
-    //     return "Anonymous";
-    //   } else {
-    //     return email;
-    //   }
-    // }
     UserService userService = UserServiceFactory.getUserService();
     String id = userService.getCurrentUser().getUserId();
 

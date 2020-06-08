@@ -48,6 +48,6 @@ public class NicknameServlet extends HttpServlet {
     entity.setProperty("nickname", nickname);
     datastore.put(entity);
 
-    response.sendRedirect("/nickname.html");
+    response.sendRedirect("/index.html");
   }
 }
