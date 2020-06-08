@@ -17,6 +17,8 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,14 +49,15 @@ public class NewCommentServlet extends HttpServlet {
     return request.getParameter("comment-text");
   }
 
-  /** Returns the author entered by the user, or "Anonymous" if left blank. */
+  /** Returns the author entered by the user, or the user's email if left blank. */
   private String getCommentAuthor(HttpServletRequest request) {
     // Get the input from the form.
     String author = request.getParameter("comment-author");
     
     // Account for a blank response.
     if (author.equals("")) {
-      return "Anonymous";
+      UserService userService = UserServiceFactory.getUserService();
+      return userService.getCurrentUser().getEmail();
     }
 
     return author;
