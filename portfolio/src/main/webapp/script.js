@@ -14,6 +14,7 @@
 
 /**
  * Loads all elements of the page that are factored out originally.
+ * 'page' is the index of the current page according to the order in the navbar.
  */
 async function loadElements(page) {
   // Insert the navbar
