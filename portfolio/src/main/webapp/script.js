@@ -19,10 +19,9 @@ async function getComments() {
   const maxComments = document.getElementById('max-comments').value;
   const response = await fetch('/list-comments?max-comments=' + maxComments);
   const comments = await response.json();
-  const commentsElement = document.getElementById('comments-container');
+  const commentsElement = document.getElementById('comments-list');
   commentsElement.innerHTML = '';
 
-<<<<<<< HEAD
   for (var comment of comments) {
     commentsElement.appendChild(createCommentElement(comment));
   }
@@ -31,10 +30,6 @@ async function getComments() {
     document.getElementById("comment-section").style.visibility="hidden";
   } else {
     document.getElementById("comment-section").style.visibility="visible";
-=======
-  for (const comment of comments) {
-    commentsElement.appendChild(createCommentElement(comment))
->>>>>>> master
   }
 }
 
