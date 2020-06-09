@@ -137,15 +137,18 @@ async function displayNickname() {
 function createMap() {
   const map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 33.6, lng: -117.77},
-    zoom: 11
+    zoom: 10
   });
 
-  addLandmark(map, 33.650778, -117.743250, 'Irvine Spectrum Center', 'places/spectrum.html');
-  addLandmark(map, 33.575421, -117.841434, 'Crystal Cove State Park', 'places/crystalcove.html');
-  addLandmark(map, 33.478083, -117.723185, 'Salt Creek Beach', 'places/saltcreek.html');
-  addLandmark(map, 33.558569, -117.667634, 'The Shops at Mission Viejo', 'places/mvmall.html');
-  addLandmark(map, 33.577095, -117.727085, 'Regal Edwards Aliso Viejo & IMAX', 'places/movies.html');
-  addLandmark(map, 33.692060, -117.889192, 'South Coast Plaza', 'places/scplaza.html');
+  addLandmark(map, 33.649397, -117.742604, 'Irvine Spectrum Center', 'places/spectrum.html');
+  addLandmark(map, 33.574302, -117.840324, 'Crystal Cove State Park', 'places/crystalcove.html');
+  addLandmark(map, 33.476702, -117.720383, 'Salt Creek Beach', 'places/saltcreek.html');
+  addLandmark(map, 33.558982, -117.668982, 'The Shops at Mission Viejo', 'places/mvmall.html');
+  addLandmark(map, 33.576321, -117.726727, 'Regal Edwards Aliso Viejo & IMAX', 'places/movies.html');
+  addLandmark(map, 33.690977, -117.888958, 'South Coast Plaza', 'places/scplaza.html');
+  addLandmark(map, 33.812095, -117.918980, 'Disneyland Park', 'places/disney.html');
+  addLandmark(map, 33.637634, -117.592207, 'Mathnasium of RSM', 'places/mathnasium.html');
+  
 }
 
 /**
