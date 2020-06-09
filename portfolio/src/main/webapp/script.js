@@ -140,21 +140,22 @@ function createMap() {
     zoom: 11
   });
 
-  addLandmark(map, 33.650778, -117.743250, 'Irvine Spectrum Center');
-  addLandmark(map, 37.421903, -122.084674, 'Stan the T-Rex');
+  addLandmark(map, 33.650778, -117.743250, 'Irvine Spectrum Center', 'places/spectrum.html');
+  addLandmark(map, 37.421903, -122.084674, 'Stan the T-Rex', 'places/trex.html');
 }
 
 /**
  * Adds a marker that shows an info window when clicked.
  */
-function addLandmark(map, lat, lng, title) {
+function addLandmark(map, lat, lng, title, URL) {
   const marker = new google.maps.Marker({
     position: {lat: lat, lng: lng},
     map: map,
     animation: google.maps.Animation.DROP});
 
   const infoWindow = new google.maps.InfoWindow({content: title});
-  marker.addListener('click', () => {
+  marker.addListener('click', async () => {
     infoWindow.open(map, marker);
+    await htmlInject(URL, 'description-container');
   });
 }
