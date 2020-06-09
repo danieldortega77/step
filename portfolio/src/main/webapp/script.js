@@ -133,7 +133,7 @@ async function displayNickname() {
 
 function createMap() {
   const map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: -34.397, lng: 150.644},
-    zoom: 8
+    center: {lat: 33.6, lng: -117.77},
+    zoom: 11
   });
 }
