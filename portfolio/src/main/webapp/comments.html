@@ -3,13 +3,11 @@
     <div class="col">
       <label for="comment-text">Comment:</label><br>
       <textarea id="comment-text" name="comment-text" form="comment-form" required></textarea>
-      <form action="/new-comment" method="POST" id="comment-form" target="output_frame" onsubmit="updateCommentSection()">
-        <label for="comment-author">Your Name <br> (Leave blank to publish anonymously):</label><br>
-        <input type="text" id="comment-author" name="comment-author">
-        <br><br>
-        <input type="submit"/>
-      </form>
-      <iframe name="output_frame" src="" id="output_frame" width="1" height="1" hidden></iframe>
+      <label for="comment-author">Your Name <br> (Leave blank to publish anonymously):</label><br>
+      <input type="text" id="comment-author" name="comment-author">
+      <br><br>
+      <input type="submit" onclick="updateCommentSection()"/>
+      <!-- <iframe name="output_frame" src="" id="output_frame" width="1" height="1" hidden></iframe> -->
     </div>
   </div>
   <div class="row" id="comment-section">
