@@ -141,7 +141,11 @@ function createMap() {
   });
 
   addLandmark(map, 33.650778, -117.743250, 'Irvine Spectrum Center', 'places/spectrum.html');
-  addLandmark(map, 37.421903, -122.084674, 'Stan the T-Rex', 'places/trex.html');
+  addLandmark(map, 33.575421, -117.841434, 'Crystal Cove State Park', 'places/crystalcove.html');
+  addLandmark(map, 33.478083, -117.723185, 'Salt Creek Beach', 'places/saltcreek.html');
+  addLandmark(map, 33.558569, -117.667634, 'The Shops at Mission Viejo', 'places/mvmall.html');
+  addLandmark(map, 33.577095, -117.727085, 'Regal Edwards Aliso Viejo & IMAX', 'places/movies.html');
+  addLandmark(map, 33.692060, -117.889192, 'South Coast Plaza', 'places/scplaza.html');
 }
 
 /**
@@ -157,5 +161,6 @@ function addLandmark(map, lat, lng, title, URL) {
   marker.addListener('click', async () => {
     infoWindow.open(map, marker);
     await htmlInject(URL, 'description-container');
+    setTimeout(() => { infoWindow.close(map, marker); }, 4000);
   });
 }
