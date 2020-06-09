@@ -131,9 +131,30 @@ async function displayNickname() {
   }
 }
 
+/**
+ * Creates a map of my favorite places in Orange County
+ */
 function createMap() {
   const map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 33.6, lng: -117.77},
     zoom: 11
+  });
+
+  addLandmark(map, 33.650778, -117.743250, 'Irvine Spectrum Center');
+  addLandmark(map, 37.421903, -122.084674, 'Stan the T-Rex');
+}
+
+/**
+ * Adds a marker that shows an info window when clicked.
+ */
+function addLandmark(map, lat, lng, title) {
+  const marker = new google.maps.Marker({
+    position: {lat: lat, lng: lng},
+    map: map,
+    animation: google.maps.Animation.DROP});
+
+  const infoWindow = new google.maps.InfoWindow({content: title});
+  marker.addListener('click', () => {
+    infoWindow.open(map, marker);
   });
 }
