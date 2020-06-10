@@ -17,33 +17,47 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.sps.data.Comment;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that deletes all comments from Datastore. */
-@WebServlet("/delete-comments")
-public class DeleteCommentsServlet extends HttpServlet {
+/** Servlet that adds a new comment to Datastore. */
+@WebServlet("/add-user")
+public class AddUserServlet extends HttpServlet {
 
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment");
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
+
+    String commentText = getCommentText(request);
+    String commentAuthor = userService.getCurrentUser().getUserId();
+    long commentTime = System.currentTimeMillis();
+
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("text", commentText);
+    commentEntity.setProperty("author", commentAuthor);
+    commentEntity.setProperty("time", commentTime);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
+    datastore.put(commentEntity);
+  }
 
-    for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
+  /** Returns the text entered by the user. */
+  private String getCommentText(HttpServletRequest request) {
+    // Get the input from the form.
+    String text = request.getParameter("comment-text");
 
-      Key taskEntityKey = KeyFactory.createKey("Comment", id);
-      datastore.delete(taskEntityKey);
+    // Account for a blank response.
+    if (text == null) {
+      return "";
     }
+
+    return text;
   }
 }

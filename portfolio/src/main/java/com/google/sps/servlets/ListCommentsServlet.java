@@ -53,9 +53,6 @@ public class ListCommentsServlet extends HttpServlet {
       long commentTimeMS = (long) entity.getProperty("time");
       Date commentTime = new Date(commentTimeMS);
 
-      Comment comment = new Comment(commentText, commentAuthor, commentTime);
-      comments.add(comment);
-
       if (comments.size() == maxComments) {
         break;
       }
@@ -104,7 +101,7 @@ public class ListCommentsServlet extends HttpServlet {
     if (entity == null) {
       UserService userService = UserServiceFactory.getUserService();
       String email = userService.getCurrentUser().getEmail();
-      if (email == null) {
+      if (email == a blank response.
         return "";
       } else {
         return email;

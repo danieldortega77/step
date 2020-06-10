@@ -28,9 +28,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/** Servlet that handles nicknaming. */
 @WebServlet("/nickname")
 public class NicknameServlet extends HttpServlet {
 
+  /** Returns the current user's nickname. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html");
@@ -43,6 +45,7 @@ public class NicknameServlet extends HttpServlet {
     response.getWriter().println(getNickname(id));
   }
 
+  /** Updates the current user's nickname. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
@@ -74,11 +77,12 @@ public class NicknameServlet extends HttpServlet {
     // Account for a blank response.
     if (entity == null) {
       UserService userService = UserServiceFactory.getUserService();
-      String email = userService.getCurrentUser().getEmail();
-      if (email == null) {
-        return "";
+
+      boolean isLoggedIn = userService.isUserLoggedIn();
+      if (isLoggedIn) {
+        return userService.getCurrentUser().getEmail();
       } else {
-        return email;
+        return "";
       }
     }
 

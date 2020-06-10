@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/** Servlet that returns the user's login information. */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
