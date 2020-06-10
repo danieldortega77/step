@@ -45,7 +45,7 @@ public class NewCommentServlet extends HttpServlet {
   /** Returns the text entered by the user. */
   private String getCommentText(HttpServletRequest request) {
     // Get the input from the form.
-    String text = request.getParameter("text");
+    String text = request.getParameter("comment-text");
     
     // Account for a blank response.
     if (text == null) {
@@ -58,7 +58,7 @@ public class NewCommentServlet extends HttpServlet {
   /** Returns the author entered by the user, or "Anonymous" if left blank. */
   private String getCommentAuthor(HttpServletRequest request) {
     // Get the input from the form.
-    String author = request.getParameter("author");
+    String author = request.getParameter("comment-author");
     
     // Account for a blank response.
     if (author == null || author.equals("")) {

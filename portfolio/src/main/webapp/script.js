@@ -44,33 +44,8 @@ async function htmlInject(templatePath, targetID) {
 /**
  * Updates the comment section after a new comment is submitted
  */
-async function updateCommentSection() {
-  // // Wait for the form to submit before resetting
-  // setTimeout(function(){ 
-  //   document.getElementById("comment-form").reset();
-  //   getComments();
-  //   }, 1000);
-  const textElement = document.getElementById('comment-text');
-  const authorElement = document.getElementById('comment-author');
-  if (textElement && authorElement) {
-    const textURI = encodeURIComponent(textElement.value);
-    const authorURI = encodeURIComponent(authorElement.value)
-    console.log(textElement.value);
-    console.log(textURI);
-    console.log(authorElement.value);
-    console.log(authorURI);
-    const response = await fetch('/new-comment', {
-      method: 'POST',
-      // headers: {
-      //   'Content-Type': 'application/x-www-form-urlencoded',
-      // },
-      body: 'text=' + textURI + "&author=" + authorURI
-    })
-    textElement.value = '';
-    authorElement.value = '';
-  }
-
-
+function updateCommentSection() {
+  document.getElementById("comment-form").reset();
   getComments();
 }
 
