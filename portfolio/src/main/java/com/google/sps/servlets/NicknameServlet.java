@@ -76,14 +76,7 @@ public class NicknameServlet extends HttpServlet {
 
     // Account for a blank response.
     if (entity == null) {
-      UserService userService = UserServiceFactory.getUserService();
-
-      boolean isLoggedIn = userService.isUserLoggedIn();
-      if (isLoggedIn) {
-        return userService.getCurrentUser().getEmail();
-      } else {
-        return "";
-      }
+      return "Anonymous";
     }
 
     String nickname = (String) entity.getProperty("nickname");

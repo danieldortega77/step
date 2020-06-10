@@ -27,37 +27,42 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that adds a new comment to Datastore. */
+/** Servlet that adds a new user to Datastore. */
 @WebServlet("/add-user")
 public class AddUserServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
-
-    String commentText = getCommentText(request);
-    String commentAuthor = userService.getCurrentUser().getUserId();
-    long commentTime = System.currentTimeMillis();
-
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("text", commentText);
-    commentEntity.setProperty("author", commentAuthor);
-    commentEntity.setProperty("time", commentTime);
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
-  }
-
-  /** Returns the text entered by the user. */
-  private String getCommentText(HttpServletRequest request) {
-    // Get the input from the form.
-    String text = request.getParameter("comment-text");
-
-    // Account for a blank response.
-    if (text == null) {
-      return "";
+    if (!userService.isUserLoggedIn()) {
+      response.sendRedirect("/index.html");
+      return;
     }
 
-    return text;
+    String id = userService.getCurrentUser().getUserId();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    
+    if (idInDatastore(id, datastore)) {
+      response.sendRedirect("/index.html");
+      return;
+    }
+
+    Entity entity = new Entity("UserInfo", id);
+    entity.setProperty("id", id);
+    entity.setProperty("nickname", userService.getCurrentUser().getEmail());
+    datastore.put(entity);
+
+    response.sendRedirect("/nickname.html");
+    return;
+  }
+
+  private boolean idInDatastore(String id, DatastoreService datastore) {
+    Query query =
+        new Query("UserInfo")
+            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
+    PreparedQuery results = datastore.prepare(query);
+    Entity entity = results.asSingleEntity();
+
+    return entity != null;
   }
 }
