@@ -58,12 +58,21 @@ async function htmlInject(templatePath, targetID) {
 /**
  * Updates the comment section after a new comment is submitted
  */
-function updateCommentSection() {
-  // Wait for the form to submit before resetting
-  setTimeout(function(){ 
-    document.getElementById('comment-form').reset();
-    getComments();
-    }, 1000);
+async function updateCommentSection() {
+  const textElement = document.getElementById("comment-text");
+
+  if (textElement && authorElement) {
+    const text = textElement.value;
+    const response = await fetch('/new-comment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({text: text})});
+    textElement.value = '';
+  }
+
+  await getComments();
 }
 
 /**
