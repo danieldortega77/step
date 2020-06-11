@@ -61,7 +61,7 @@ async function htmlInject(templatePath, targetID) {
 async function updateCommentSection() {
   const textElement = document.getElementById("comment-text");
 
-  if (textElement && authorElement) {
+  if (textElement) {
     const text = textElement.value;
     const response = await fetch('/new-comment', {
       method: 'POST',
