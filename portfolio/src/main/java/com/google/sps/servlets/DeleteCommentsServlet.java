@@ -45,7 +45,5 @@ public class DeleteCommentsServlet extends HttpServlet {
       Key taskEntityKey = KeyFactory.createKey("Comment", id);
       datastore.delete(taskEntityKey);
     }
-
-    response.sendRedirect("/index.html");
   }
 }

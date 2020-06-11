@@ -42,6 +42,29 @@ async function htmlInject(templatePath, targetID) {
 }
 
 /**
+ * Updates the comment section after a new comment is submitted
+ */
+async function updateCommentSection() {
+  const textElement = document.getElementById("comment-text");
+  const authorElement = document.getElementById("comment-author");
+
+  if (textElement && authorElement) {
+    const text = textElement.value;
+    const author = authorElement.value;
+    const response = await fetch('/new-comment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({text: text, author: author})});
+    textElement.value = '';
+    authorElement.value = '';
+  }
+
+  await getComments();
+}
+
+/**
  * Fetches comments from the servers and adds them to the DOM.
  */
 async function getComments() {

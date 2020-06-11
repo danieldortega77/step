@@ -17,6 +17,9 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import java.io.BufferedReader;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,10 +32,15 @@ public class NewCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String commentText = getCommentText(request);
-    String commentAuthor = getCommentAuthor(request);
+    // Read from request
+    BufferedReader reader = request.getReader();
+    JsonObject convertedObject = new Gson().fromJson(reader, JsonObject.class);
+    
+    String commentText = getAttribute(convertedObject, "text");
+    String commentAuthor = getAttribute(convertedObject, "author");
     long commentTime = System.currentTimeMillis();
 
+    // Add comment to Datastore
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("text", commentText);
     commentEntity.setProperty("author", commentAuthor);
@@ -40,35 +48,10 @@ public class NewCommentServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
-
-    String referer = request.getHeader("Referer");
-
-    response.sendRedirect(referer);
   }
 
-  /** Returns the text entered by the user. */
-  private String getCommentText(HttpServletRequest request) {
-    // Get the input from the form.
-    String text = request.getParameter("comment-text");
-    
-    // Account for a blank response.
-    if (text == null) {
-      return "";
-    }
-
-    return text;
-  }
-
-  /** Returns the author entered by the user, or "Anonymous" if left blank. */
-  private String getCommentAuthor(HttpServletRequest request) {
-    // Get the input from the form.
-    String author = request.getParameter("comment-author");
-    
-    // Account for a blank response.
-    if (author == null || author.equals("")) {
-      return "Anonymous";
-    }
-
-    return author;
+  // Retrieves and removes quotes around the specified attribute of obj
+  private String getAttribute(JsonObject obj, String attr) {
+    return obj.get(attr).toString().replaceAll("^\"|\"$", "");
   }
 }
