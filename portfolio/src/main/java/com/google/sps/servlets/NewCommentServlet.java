@@ -33,16 +33,8 @@ public class NewCommentServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Read from request
-    StringBuffer jb = new StringBuffer();
-    String line = null;
     BufferedReader reader = request.getReader();
-    while ((line = reader.readLine()) != null) {
-      jb.append(line);
-    }
-
-    // Convert request payload to a json
-    String json = jb.toString();
-    JsonObject convertedObject = new Gson().fromJson(json, JsonObject.class);
+    JsonObject convertedObject = new Gson().fromJson(reader, JsonObject.class);
     
     String commentText = getAttribute(convertedObject, "text");
     String commentAuthor = getAttribute(convertedObject, "author");
