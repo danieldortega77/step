@@ -115,7 +115,7 @@ function createCommentElement(comment) {
 
 function createAnyElement(tag, text) {
   const textElement = document.createElement(tag);
-  textElement.innerText = text;
+  textElement.innerHTML = text.replace(/\\n/, "<br>");
   return textElement;
 }
 
