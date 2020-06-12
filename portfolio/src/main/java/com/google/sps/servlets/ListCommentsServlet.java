@@ -39,6 +39,7 @@ public class ListCommentsServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Comment").addSort("time", SortDirection.DESCENDING);
     int maxComments = getMaxComments(request);
+    double maxToxicity = getMaxToxicity(request);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -49,13 +50,22 @@ public class ListCommentsServlet extends HttpServlet {
       String commentAuthor = (String) entity.getProperty("author");
       long commentTimeMS = (long) entity.getProperty("time");
       Date commentTime = new Date(commentTimeMS);
+      double commentToxicity = (double) entity.getProperty("toxicity");
 
-      Comment comment = new Comment(commentText, commentAuthor, commentTime);
-      comments.add(comment);
+      if (commentToxicity <= maxToxicity) {
+        Comment comment = new Comment(commentText, commentAuthor, commentTime, commentToxicity);
+        comments.add(comment);
+      }
 
       if (comments.size() == maxComments) {
         break;
       }
+    }
+
+    // Edge case: all comments are greater than toxicity tolerance
+    if (comments.size() == 0 && results != null) {
+      Comment comment = new Comment("There are no comments satisfying your search request.", "Comment Bot", new Date(), 0);
+      comments.add(comment);
     }
 
     // Convert the comments to JSON
@@ -87,5 +97,22 @@ public class ListCommentsServlet extends HttpServlet {
     }
 
     return maxComments;
+  }
+
+  /** Returns the maximum toxicity entered by the user. */
+  private double getMaxToxicity(HttpServletRequest request) {
+    // Get the input from the user.
+    String maxToxicityString = request.getParameter("max-toxicity");
+
+    // Convert the input to a double.
+    double maxToxicity;
+    try {
+      maxToxicity = Double.parseDouble(maxToxicityString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to double: " + maxToxicityString);
+      return -1;
+    }
+
+    return maxToxicity;
   }
 }

@@ -51,12 +51,13 @@ async function updateCommentSection() {
   if (textElement && authorElement) {
     const text = textElement.value;
     const author = authorElement.value;
+    const toxicity = await getToxicity(text);
     const response = await fetch('/new-comment', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({text: text, author: author})});
+      body: JSON.stringify({text: text, author: author, toxicity: toxicity})});
     textElement.value = '';
     authorElement.value = '';
   }
@@ -68,8 +69,17 @@ async function updateCommentSection() {
  * Fetches comments from the servers and adds them to the DOM.
  */
 async function getComments() {
-  const maxComments = document.getElementById('max-comments').value;
-  const response = await fetch('/list-comments?max-comments=' + maxComments);
+  const maxCommentsElement = document.getElementById('max-comments');
+  if (!maxCommentsElement) {
+    return;
+  }
+  const maxComments = maxCommentsElement.value;
+  const maxToxicityElement = document.getElementById('max-toxicity');
+  if (!maxToxicityElement) {
+    return;
+  }
+  const maxToxicity = maxToxicityElement.value;
+  const response = await fetch('/list-comments?max-comments=' + maxComments + '&max-toxicity=' + maxToxicity);
   const comments = await response.json();
   const commentsElement = document.getElementById('comments-list');
   commentsElement.innerHTML = '';
@@ -95,6 +105,7 @@ function createCommentElement(comment) {
   commentElement.appendChild(createAnyElement('h5', comment.author));
   commentElement.appendChild(createAnyElement('h6', comment.time));
   commentElement.appendChild(createAnyElement('p',  comment.text));
+  commentElement.appendChild(createAnyElement('p',  comment.toxicity));
 
   return commentElement;
 }
@@ -114,4 +125,21 @@ async function deleteComments() {
     const response = await fetch('/delete-comments', {method: 'POST'});
     getComments();
   }
+}
+
+/**
+ * Returns the toxicity of the text input.
+ */
+async function getToxicity(text) {
+  const response = await fetch(
+  'https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=API_KEY_HERE',
+  {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({comment: {text: text}, languages: [], requestedAttributes: { TOXICITY: {} }})
+  });
+  const data = await response.json();
+  console.log(data);
+  console.log(data.attributeScores.TOXICITY.summaryScore.value);
+  return data.attributeScores.TOXICITY.summaryScore.value
 }

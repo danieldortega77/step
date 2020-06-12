@@ -39,12 +39,15 @@ public class NewCommentServlet extends HttpServlet {
     String commentText = getAttribute(convertedObject, "text");
     String commentAuthor = getAttribute(convertedObject, "author");
     long commentTime = System.currentTimeMillis();
+    String toxicityString = getAttribute(convertedObject, "toxicity");
+    double toxicity = Double.parseDouble(toxicityString);
 
     // Add comment to Datastore
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("text", commentText);
     commentEntity.setProperty("author", commentAuthor);
     commentEntity.setProperty("time", commentTime);
+    commentEntity.setProperty("toxicity", toxicity);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
