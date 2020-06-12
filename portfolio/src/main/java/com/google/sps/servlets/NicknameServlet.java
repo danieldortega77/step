@@ -61,6 +61,7 @@ public class NicknameServlet extends HttpServlet {
     Entity entity = new Entity("UserInfo", id);
     entity.setProperty("id", id);
     entity.setProperty("nickname", nickname);
+    // put() either inserts new nickname or updates existing nickname based on ID
     datastore.put(entity);
 
     response.sendRedirect("/index.html");
