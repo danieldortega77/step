@@ -22,14 +22,14 @@ public class Comment {
   }
   
   public String getText() {
-      return text;
+    return text;
   }
 
   public String getAuthor() {
-      return author;
+    return author;
   }
 
   public Date getTime() {
-      return time;
+    return time;
   }
 }
