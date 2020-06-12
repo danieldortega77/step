@@ -17,7 +17,7 @@ package com.google.sps.servlets;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
-import com.google.sps.data.UserInfo;
+import com.google.sps.data.LoginInfo;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
     String loginUrl = userService.createLoginURL("/add-user");
     String logoutUrl = userService.createLogoutURL("/index.html");
 
-    LoginInfo loginInfo = new UserInfo(isLoggedIn, loginUrl, logoutUrl);
+    LoginInfo loginInfo = new LoginInfo(isLoggedIn, loginUrl, logoutUrl);
 
     Gson gson = new Gson();
     String json = gson.toJson(loginInfo);
