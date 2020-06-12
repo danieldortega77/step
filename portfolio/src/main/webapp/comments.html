@@ -11,9 +11,11 @@
   <div class="row" id="comment-section">
     <div class="col-md-6">
       <label for="max-comments">Number of comments:</label>
-      <input type="number" id="max-comments" name="max-comments" min="1" max="100" value="5" onchange="getComments()"/>
+      <input type="number" id="max-comments" name="max-comments" min="1" max="100" value="5" onchange="getComments()"/><br>
       <label for="max-toxicity">Toxicity tolerance:</label>
-      <input type="number" id="max-toxicity" name="max-toxicity" min="0" max="1" value="0.5" step="0.1" onchange="getComments()"/>
+      <input type="number" id="max-toxicity" name="max-toxicity" min="0" max="1" value="0.5" step="0.1" onchange="getComments()"/><br>
+      <label for="display-toxicity">Display toxicity scores?</label>
+      <input type="checkbox" id="display-toxicity" name="display-toxicity" onchange="getComments()" checked>
       <div id="comments-list"></div>
       <input type="submit" id="delete-button" value="Delete all comments" onclick="deleteComments()"/>
     </div>
