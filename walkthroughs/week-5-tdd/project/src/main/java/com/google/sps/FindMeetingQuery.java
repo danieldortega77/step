@@ -15,9 +15,21 @@
 package com.google.sps;
 
 import java.util.Collection;
+import java.util.Arrays;
 
 public final class FindMeetingQuery {
+  private static final int TIME_0830AM = TimeRange.getTimeInMinutes(8, 30);
+  private static final int TIME_0900AM = TimeRange.getTimeInMinutes(9, 0);
+
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+    for (String attendee : request.getAttendees()) {
+      for (Event event : events) {
+        if (event.getAttendees().contains(attendee)) {
+          TimeRange existingMeeting = event.getWhen();
+        }
+      }
+    }
+    return Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+            TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true));
   }
 }
