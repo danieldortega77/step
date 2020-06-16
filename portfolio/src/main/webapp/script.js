@@ -116,6 +116,9 @@ async function getComments() {
     document.getElementById('comment-section').style.visibility = 'hidden';
   } else {
     document.getElementById('comment-section').style.visibility = 'visible';
+    for (var comment of comments) {
+      commentsElement.appendChild(createCommentElement(comment));
+    }
   }
 }
 
