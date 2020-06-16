@@ -24,7 +24,7 @@ public final class FindMeetingQuery {
   private static final int TIME_0900AM = TimeRange.getTimeInMinutes(9, 0);
 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    List<TimeRange> output = Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, false));
+    List<TimeRange> output = Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, true));
 
     // For each attendee
     for (String attendee : request.getAttendees()) {
@@ -71,6 +71,7 @@ public final class FindMeetingQuery {
               tempRanges.add(possibleTR);
             }
           }
+          output = tempRanges;
         }
       }
     }
