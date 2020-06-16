@@ -40,6 +40,7 @@ async function loadElements(page) {
     document.getElementById('dropdown-logout').setAttribute("href", userInfo.logoutUrl);
     displayNickname();
   }
+
   getComments();
 }
 
@@ -140,4 +141,47 @@ async function displayNickname() {
   if (element) {
     element.innerHTML = 'Your current nickname is ' + nickname + '.';
   }
+}
+
+/**
+ * Creates a map of my favorite places in Orange County
+ */
+function createMap() {
+  const map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 33.6, lng: -117.77},
+    zoom: 10
+  });
+
+  addLandmark(map, 33.649397, -117.742604, 'Irvine Spectrum Center', 'places/spectrum.html');
+  addLandmark(map, 33.574302, -117.840324, 'Crystal Cove State Park', 'places/crystalcove.html');
+  addLandmark(map, 33.476702, -117.720383, 'Salt Creek Beach', 'places/saltcreek.html');
+  addLandmark(map, 33.558982, -117.668982, 'The Shops at Mission Viejo', 'places/mvmall.html');
+  addLandmark(map, 33.576321, -117.726727, 'Regal Edwards Aliso Viejo & IMAX', 'places/movies.html');
+  addLandmark(map, 33.690977, -117.888958, 'South Coast Plaza', 'places/scplaza.html');
+  addLandmark(map, 33.812095, -117.918980, 'Disneyland Park', 'places/disney.html');
+  addLandmark(map, 33.637634, -117.592207, 'Mathnasium of RSM', 'places/mathnasium.html');
+  
+}
+
+/**
+ * Adds a marker to the map.
+ */
+function addLandmark(map, lat, lng, title, url) {
+  const marker = new google.maps.Marker({
+    position: {lat: lat, lng: lng},
+    map: map,
+    animation: google.maps.Animation.DROP});
+  
+  /**
+   *  Add attributes to marker when clicked:
+   *  - Open an info window with the place's name
+   *  - Add a description of the place to the DOM
+   *  - Close the info window after 4 seconds
+   */
+  const infoWindow = new google.maps.InfoWindow({content: title});
+  marker.addListener('click', async () => {
+    infoWindow.open(map, marker);
+    await htmlInject(url, 'description-container');
+    setTimeout(() => { infoWindow.close(map, marker); }, 4000);
+  });
 }
