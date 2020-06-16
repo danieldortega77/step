@@ -164,14 +164,20 @@ function createMap() {
 }
 
 /**
- * Adds a marker that shows an info window when clicked.
+ * Adds a marker to the map.
  */
 function addLandmark(map, lat, lng, title, URL) {
   const marker = new google.maps.Marker({
     position: {lat: lat, lng: lng},
     map: map,
     animation: google.maps.Animation.DROP});
-
+  
+  /**
+   *  Add attributes to marker when clicked:
+   *  - Open an info window with the place's name
+   *  - Add a description of the place to the DOM
+   *  - Close the info window after 4 seconds
+   */
   const infoWindow = new google.maps.InfoWindow({content: title});
   marker.addListener('click', async () => {
     infoWindow.open(map, marker);
