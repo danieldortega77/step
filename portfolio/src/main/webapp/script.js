@@ -166,7 +166,7 @@ function createMap() {
 /**
  * Adds a marker to the map.
  */
-function addLandmark(map, lat, lng, title, URL) {
+function addLandmark(map, lat, lng, title, url) {
   const marker = new google.maps.Marker({
     position: {lat: lat, lng: lng},
     map: map,
@@ -181,7 +181,7 @@ function addLandmark(map, lat, lng, title, URL) {
   const infoWindow = new google.maps.InfoWindow({content: title});
   marker.addListener('click', async () => {
     infoWindow.open(map, marker);
-    await htmlInject(URL, 'description-container');
+    await htmlInject(url, 'description-container');
     setTimeout(() => { infoWindow.close(map, marker); }, 4000);
   });
 }
