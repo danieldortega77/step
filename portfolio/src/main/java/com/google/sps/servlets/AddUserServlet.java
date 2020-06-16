@@ -53,7 +53,6 @@ public class AddUserServlet extends HttpServlet {
     datastore.put(entity);
 
     response.sendRedirect("/nickname.html");
-    return;
   }
 
   private boolean idInDatastore(String id, DatastoreService datastore) {

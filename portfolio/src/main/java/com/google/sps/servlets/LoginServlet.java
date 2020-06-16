@@ -35,13 +35,6 @@ public class LoginServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
 
     boolean isLoggedIn = userService.isUserLoggedIn();
-    String email;
-    if (isLoggedIn) {
-      email = userService.getCurrentUser().getEmail();
-    } else {
-      email = null;
-    }
-
     String loginUrl = userService.createLoginURL("/add-user");
     String logoutUrl = userService.createLogoutURL("/index.html");
 

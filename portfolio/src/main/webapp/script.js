@@ -30,7 +30,7 @@ async function loadElements(page) {
   const loginResponse = await fetch('/login');
   const userInfo = await loginResponse.json();
 
-  if (!(userInfo.isLoggedIn)) {
+  if (!userInfo.isLoggedIn) {
     document.getElementById('comment-submission').innerHTML = '';
     document.getElementById('dropdown-login').setAttribute("href", userInfo.loginUrl);
     document.getElementById('dropdown-nickname').remove();
