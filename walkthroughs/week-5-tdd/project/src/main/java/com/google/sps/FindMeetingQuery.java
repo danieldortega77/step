@@ -26,13 +26,17 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     List<TimeRange> output = Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, false));
 
+    // For each attendee
     for (String attendee : request.getAttendees()) {
+      // For each time slot of that attendee
       for (Event event : events) {
         if (event.getAttendees().contains(attendee)) {
-          TimeRange existingMeeting = event.getWhen();
+          TimeRange existingTR = event.getWhen();
+          List<TimeRange> tempRanges = new ArrayList<TimeRange>();
 
-          for (TimeRange possibleMeeting : output) {
-            if (possibleMeeting.overlaps(existingMeeting)) {
+          // For each currently "open" time slot
+          for (TimeRange possibleTR : output) {
+            if (possibleTR.overlaps(existingTR)) {
               // Case 1: E |------|
               //         P  |---|
               //
@@ -44,15 +48,27 @@ public final class FindMeetingQuery {
               //
               // Case 4: E |-----|
               //         P   |-------|
-              if (existingMeeting.contains(possibleMeeting)) {
-                // Remove possibleMeeting
-              } else if (possibleMeeting.contains(existingMeeting)) {
+              int possibleStart = possibleTR.start();
+              int possibleEnd = possibleTR.end();
+              int existingStart = existingTR.start();
+              int existingEnd = existingTR.end();
+
+              if (existingTR.contains(possibleTR)) {
+                // Disregard possibleTR
+                continue;
+              } else if (possibleTR.contains(existingTR)) {
                 // Split into two on either side
-              } else if (possibleMeeting.start() < existingMeeting.start()) {
+                tempRanges.add(TimeRange.fromStartEnd(possibleStart, existingStart, false));
+                tempRanges.add(TimeRange.fromStartEnd(existingEnd, possibleEnd, false));
+              } else if (possibleStart < existingStart) {
                 // Split into one on left
-              } else if (possibleMeeting.end() > existingMeeting.end()) {
+                tempRanges.add(TimeRange.fromStartEnd(possibleStart, existingStart, false));
+              } else if (possibleEnd > existingEnd) {
                 // Split into one on right
+                tempRanges.add(TimeRange.fromStartEnd(existingEnd, possibleEnd, false));
               }
+            } else {
+              tempRanges.add(possibleTR);
             }
           }
         }
@@ -60,7 +76,7 @@ public final class FindMeetingQuery {
     }
 
     return output;
-    return Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
-            TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true));
+    // return Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+    //         TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true));
   }
 }
