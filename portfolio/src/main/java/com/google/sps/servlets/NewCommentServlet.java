@@ -17,6 +17,8 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.io.BufferedReader;
@@ -32,12 +34,14 @@ public class NewCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
+
     // Read from request
     BufferedReader reader = request.getReader();
     JsonObject convertedObject = new Gson().fromJson(reader, JsonObject.class);
     
     String commentText = getAttribute(convertedObject, "text");
-    String commentAuthor = getAttribute(convertedObject, "author");
+    String commentAuthor = userService.getCurrentUser().getUserId();
     long commentTime = System.currentTimeMillis();
     String toxicityString = getAttribute(convertedObject, "toxicity");
     double toxicity = Double.parseDouble(toxicityString);

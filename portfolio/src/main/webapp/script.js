@@ -21,11 +21,26 @@ async function loadElements(page) {
   await htmlInject('navbar.html', 'navbar-container');
   var navbarOptions = document.querySelectorAll('.nav-item')
   // Select and then highlight the current page's name in the navbar
-  navbarOptions[page].classList.add("active");
-
+  navbarOptions[page].classList.add('active');
+  
   // Insert social media and comment section, if present in page
   await htmlInject('socials.html', 'socials-container');
   await htmlInject('comments.html', 'comments-container');
+
+  const loginResponse = await fetch('/login');
+  const userInfo = await loginResponse.json();
+
+  if (!userInfo.isLoggedIn) {
+    document.getElementById('comment-submission').innerHTML = '';
+    document.getElementById('dropdown-login').setAttribute("href", userInfo.loginUrl);
+    document.getElementById('dropdown-nickname').remove();
+    document.getElementById('dropdown-logout').remove();
+  } else {
+    document.getElementById('dropdown-login').remove();
+    document.getElementById('dropdown-logout').setAttribute("href", userInfo.logoutUrl);
+    displayNickname();
+  }
+
   getComments();
 }
 
@@ -46,20 +61,17 @@ async function htmlInject(templatePath, targetID) {
  */
 async function updateCommentSection() {
   const textElement = document.getElementById("comment-text");
-  const authorElement = document.getElementById("comment-author");
 
-  if (textElement && authorElement) {
+  if (textElement) {
     const text = textElement.value;
-    const author = authorElement.value;
     const toxicity = await getToxicity(text);
     const response = await fetch('/new-comment', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({text: text, author: author, toxicity: toxicity})});
+      body: JSON.stringify({text: text, toxicity: toxicity})});
     textElement.value = '';
-    authorElement.value = '';
   }
 
   await getComments();
@@ -74,18 +86,22 @@ async function getComments() {
     return;
   }
   const maxComments = maxCommentsElement.value;
+
   const maxToxicityElement = document.getElementById('max-toxicity');
   if (!maxToxicityElement) {
     return;
   }
   const maxToxicity = maxToxicityElement.value;
+
   const response = await fetch('/list-comments?max-comments=' + maxComments + '&max-toxicity=' + maxToxicity);
   const comments = await response.json();
+
   const commentsElement = document.getElementById('comments-list');
   if (!commentsElement) {
     return;
   }
   commentsElement.innerHTML = '';
+
   const displayToxicityElement = document.getElementById('display-toxicity');
   if (!displayToxicityElement) {
     return;
@@ -96,7 +112,7 @@ async function getComments() {
     commentsElement.appendChild(createCommentElement(comment, displayToxicity));
   }
 
-  if (commentsElement.innerHTML === '') {
+  if (comments.length == 0) {
     document.getElementById('comment-section').style.visibility = 'hidden';
   } else {
     document.getElementById('comment-section').style.visibility = 'visible';
@@ -122,7 +138,10 @@ function createCommentElement(comment, displayToxicity) {
 
 function createAnyElement(tag, text) {
   const textElement = document.createElement(tag);
-  textElement.innerText = text;
+  if (typeof(text) == "string") {
+    text = text.replace(/\\n/g, "<br>");
+  }
+  textElement.innerHTML = text;
   return textElement;
 }
 
@@ -151,5 +170,60 @@ async function getToxicity(text) {
   const data = await response.json();
   console.log(data);
   console.log(data.attributeScores.TOXICITY.summaryScore.value);
-  return data.attributeScores.TOXICITY.summaryScore.value
+  return data.attributeScores.TOXICITY.summaryScore.value;
+}
+
+/**
+ * Displays user's nickname on the 'change nickname' webpage
+ */
+async function displayNickname() {
+  const response = await fetch('/nickname');
+  const nickname = await response.text();
+  const element = document.getElementById('nickname-greeting');
+  if (element) {
+    element.innerHTML = 'Your current nickname is ' + nickname + '.';
+  }
+}
+
+/**
+ * Creates a map of my favorite places in Orange County
+ */
+function createMap() {
+  const map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 33.6, lng: -117.77},
+    zoom: 10
+  });
+
+  addLandmark(map, 33.649397, -117.742604, 'Irvine Spectrum Center', 'places/spectrum.html');
+  addLandmark(map, 33.574302, -117.840324, 'Crystal Cove State Park', 'places/crystalcove.html');
+  addLandmark(map, 33.476702, -117.720383, 'Salt Creek Beach', 'places/saltcreek.html');
+  addLandmark(map, 33.558982, -117.668982, 'The Shops at Mission Viejo', 'places/mvmall.html');
+  addLandmark(map, 33.576321, -117.726727, 'Regal Edwards Aliso Viejo & IMAX', 'places/movies.html');
+  addLandmark(map, 33.690977, -117.888958, 'South Coast Plaza', 'places/scplaza.html');
+  addLandmark(map, 33.812095, -117.918980, 'Disneyland Park', 'places/disney.html');
+  addLandmark(map, 33.637634, -117.592207, 'Mathnasium of RSM', 'places/mathnasium.html');
+  
+}
+
+/**
+ * Adds a marker to the map.
+ */
+function addLandmark(map, lat, lng, title, url) {
+  const marker = new google.maps.Marker({
+    position: {lat: lat, lng: lng},
+    map: map,
+    animation: google.maps.Animation.DROP});
+  
+  /**
+   *  Add attributes to marker when clicked:
+   *  - Open an info window with the place's name
+   *  - Add a description of the place to the DOM
+   *  - Close the info window after 4 seconds
+   */
+  const infoWindow = new google.maps.InfoWindow({content: title});
+  marker.addListener('click', async () => {
+    infoWindow.open(map, marker);
+    await htmlInject(url, 'description-container');
+    setTimeout(() => { infoWindow.close(map, marker); }, 4000);
+  });
 }

@@ -20,6 +20,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
 import java.io.IOException;
@@ -47,7 +49,8 @@ public class ListCommentsServlet extends HttpServlet {
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       String commentText = (String) entity.getProperty("text");
-      String commentAuthor = (String) entity.getProperty("author");
+      String id = (String) entity.getProperty("author");
+      String commentAuthor = getNickname(id);
       long commentTimeMS = (long) entity.getProperty("time");
       Date commentTime = new Date(commentTimeMS);
       double commentToxicity = (double) entity.getProperty("toxicity");
@@ -114,5 +117,22 @@ public class ListCommentsServlet extends HttpServlet {
     }
 
     return maxToxicity;
+  }
+
+  private String getNickname(String id) {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query =
+        new Query("UserInfo")
+            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
+    PreparedQuery results = datastore.prepare(query);
+    Entity entity = results.asSingleEntity();
+
+    // Account for a blank response.
+    if (entity == null) {
+      return "Anonymous";
+    }
+
+    String nickname = (String) entity.getProperty("nickname");
+    return nickname;
   }
 }
