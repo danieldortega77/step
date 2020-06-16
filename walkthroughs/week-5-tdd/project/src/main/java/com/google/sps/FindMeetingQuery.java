@@ -76,8 +76,15 @@ public final class FindMeetingQuery {
       }
     }
 
-    return output;
-    // return Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
-    //         TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true));
+    List<TimeRange> tempRanges = new ArrayList<TimeRange>();
+    for (TimeRange possibleTR : output) {
+      int duration = possibleTR.duration();
+      if (duration == 0 || duration < request.getDuration()) {
+        continue;
+      }
+      tempRanges.add(possibleTR);
+    }
+
+    return tempRanges;
   }
 }
