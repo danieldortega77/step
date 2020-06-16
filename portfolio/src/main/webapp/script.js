@@ -21,11 +21,25 @@ async function loadElements(page) {
   await htmlInject('navbar.html', 'navbar-container');
   var navbarOptions = document.querySelectorAll('.nav-item')
   // Select and then highlight the current page's name in the navbar
-  navbarOptions[page].classList.add("active");
-
+  navbarOptions[page].classList.add('active');
+  
   // Insert social media and comment section, if present in page
   await htmlInject('socials.html', 'socials-container');
   await htmlInject('comments.html', 'comments-container');
+
+  const loginResponse = await fetch('/login');
+  const userInfo = await loginResponse.json();
+
+  if (!userInfo.isLoggedIn) {
+    document.getElementById('comment-submission').innerHTML = '';
+    document.getElementById('dropdown-login').setAttribute("href", userInfo.loginUrl);
+    document.getElementById('dropdown-nickname').remove();
+    document.getElementById('dropdown-logout').remove();
+  } else {
+    document.getElementById('dropdown-login').remove();
+    document.getElementById('dropdown-logout').setAttribute("href", userInfo.logoutUrl);
+    displayNickname();
+  }
   getComments();
 }
 
@@ -46,19 +60,16 @@ async function htmlInject(templatePath, targetID) {
  */
 async function updateCommentSection() {
   const textElement = document.getElementById("comment-text");
-  const authorElement = document.getElementById("comment-author");
 
-  if (textElement && authorElement) {
+  if (textElement) {
     const text = textElement.value;
-    const author = authorElement.value;
     const response = await fetch('/new-comment', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({text: text, author: author})});
+      body: JSON.stringify({text: text})});
     textElement.value = '';
-    authorElement.value = '';
   }
 
   await getComments();
@@ -68,20 +79,23 @@ async function updateCommentSection() {
  * Fetches comments from the servers and adds them to the DOM.
  */
 async function getComments() {
-  const maxComments = document.getElementById('max-comments').value;
+  const maxCommentsElement = document.getElementById('max-comments');
+  if (!maxCommentsElement) {
+    return;
+  }
+  const maxComments = maxCommentsElement.value;
   const response = await fetch('/list-comments?max-comments=' + maxComments);
   const comments = await response.json();
   const commentsElement = document.getElementById('comments-list');
   commentsElement.innerHTML = '';
 
-  for (var comment of comments) {
-    commentsElement.appendChild(createCommentElement(comment));
-  }
-
-  if (commentsElement.innerHTML === '') {
+  if (comments.length == 0) {
     document.getElementById('comment-section').style.visibility = 'hidden';
   } else {
     document.getElementById('comment-section').style.visibility = 'visible';
+    for (var comment of comments) {
+      commentsElement.appendChild(createCommentElement(comment));
+    }
   }
 }
 
@@ -101,7 +115,7 @@ function createCommentElement(comment) {
 
 function createAnyElement(tag, text) {
   const textElement = document.createElement(tag);
-  textElement.innerText = text;
+  textElement.innerHTML = text.replace(/\\n/, "<br>");
   return textElement;
 }
 
@@ -113,5 +127,17 @@ async function deleteComments() {
   if (confirmation) {
     const response = await fetch('/delete-comments', {method: 'POST'});
     getComments();
+  }
+}
+
+/**
+ * Displays user's nickname on the 'change nickname' webpage
+ */
+async function displayNickname() {
+  const response = await fetch('/nickname');
+  const nickname = await response.text();
+  const element = document.getElementById('nickname-greeting');
+  if (element) {
+    element.innerHTML = 'Your current nickname is ' + nickname + '.';
   }
 }
