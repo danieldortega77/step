@@ -17,13 +17,14 @@ package com.google.sps.servlets;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
-import com.google.sps.data.UserInfo;
+import com.google.sps.data.LoginInfo;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/** Servlet that returns the user's login information. */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
@@ -34,17 +35,13 @@ public class LoginServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
 
     boolean isLoggedIn = userService.isUserLoggedIn();
-    String email;
-    if (isLoggedIn) {
-      email = userService.getCurrentUser().getEmail();
-    } else {
-      email = null;
-    }
+    String loginUrl = userService.createLoginURL("/add-user");
+    String logoutUrl = userService.createLogoutURL("/index.html");
 
-    UserInfo userInfo = new UserInfo(email, isLoggedIn);
+    LoginInfo loginInfo = new LoginInfo(isLoggedIn, loginUrl, logoutUrl);
 
     Gson gson = new Gson();
-    String json = gson.toJson(userInfo);
+    String json = gson.toJson(loginInfo);
 
     // Send the JSON as the response
     response.getWriter().println(json);

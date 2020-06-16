@@ -17,10 +17,11 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import java.io.BufferedReader;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,10 +36,15 @@ public class NewCommentServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
-    String commentText = getCommentText(request);
+    // Read from request
+    BufferedReader reader = request.getReader();
+    JsonObject convertedObject = new Gson().fromJson(reader, JsonObject.class);
+    
+    String commentText = getAttribute(convertedObject, "text");
     String commentAuthor = userService.getCurrentUser().getUserId();
     long commentTime = System.currentTimeMillis();
 
+    // Add comment to Datastore
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("text", commentText);
     commentEntity.setProperty("author", commentAuthor);
@@ -48,16 +54,8 @@ public class NewCommentServlet extends HttpServlet {
     datastore.put(commentEntity);
   }
 
-  /** Returns the text entered by the user. */
-  private String getCommentText(HttpServletRequest request) {
-    // Get the input from the form.
-    String text = request.getParameter("comment-text");
-
-    // Account for a blank response.
-    if (text == null) {
-      return "";
-    }
-
-    return text;
+  // Retrieves and removes quotes around the specified attribute of obj
+  private String getAttribute(JsonObject obj, String attr) {
+    return obj.get(attr).toString().replaceAll("^\"|\"$", "");
   }
 }

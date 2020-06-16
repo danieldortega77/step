@@ -22,65 +22,46 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that handles nicknaming. */
-@WebServlet("/nickname")
-public class NicknameServlet extends HttpServlet {
+/** Servlet that adds a new user to Datastore. */
+@WebServlet("/add-user")
+public class AddUserServlet extends HttpServlet {
 
-  /** Returns the current user's nickname. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html");
-    UserService userService = UserServiceFactory.getUserService();
-    if (!userService.isUserLoggedIn()) {
-      response.sendRedirect("/index.html");
-      return;
-    }
-    String id = userService.getCurrentUser().getUserId();
-    response.getWriter().println(getNickname(id));
-  }
-
-  /** Updates the current user's nickname. */
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
     if (!userService.isUserLoggedIn()) {
       response.sendRedirect("/index.html");
       return;
     }
 
-    String nickname = request.getParameter("nickname");
     String id = userService.getCurrentUser().getUserId();
-
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    
+    if (idInDatastore(id, datastore)) {
+      response.sendRedirect("/index.html");
+      return;
+    }
+
     Entity entity = new Entity("UserInfo", id);
     entity.setProperty("id", id);
-    entity.setProperty("nickname", nickname);
-    // put() either inserts new nickname or updates existing nickname based on ID
+    entity.setProperty("nickname", userService.getCurrentUser().getEmail());
     datastore.put(entity);
 
-    response.sendRedirect("/index.html");
+    response.sendRedirect("/nickname.html");
   }
 
-  private String getNickname(String id) {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private boolean idInDatastore(String id, DatastoreService datastore) {
     Query query =
         new Query("UserInfo")
             .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
     PreparedQuery results = datastore.prepare(query);
     Entity entity = results.asSingleEntity();
 
-    // Account for a blank response.
-    if (entity == null) {
-      return "Anonymous";
-    }
-
-    String nickname = (String) entity.getProperty("nickname");
-    return nickname;
+    return entity != null;
   }
 }

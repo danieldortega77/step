@@ -102,13 +102,7 @@ public class ListCommentsServlet extends HttpServlet {
 
     // Account for a blank response.
     if (entity == null) {
-      UserService userService = UserServiceFactory.getUserService();
-      String email = userService.getCurrentUser().getEmail();
-      if (email == null) {
-        return "";
-      } else {
-        return email;
-      }
+      return "Anonymous";
     }
 
     String nickname = (String) entity.getProperty("nickname");

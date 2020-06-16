@@ -14,6 +14,7 @@
 
 /**
  * Loads all elements of the page that are factored out originally.
+ * 'page' is the index of the current page according to the order in the navbar.
  */
 async function loadElements(page) {
   // Insert the navbar
@@ -29,12 +30,14 @@ async function loadElements(page) {
   const loginResponse = await fetch('/login');
   const userInfo = await loginResponse.json();
 
-  if (!(userInfo.isLoggedIn)) {
+  if (!userInfo.isLoggedIn) {
     document.getElementById('comment-submission').innerHTML = '';
+    document.getElementById('dropdown-login').setAttribute("href", userInfo.loginUrl);
     document.getElementById('dropdown-nickname').remove();
     document.getElementById('dropdown-logout').remove();
   } else {
     document.getElementById('dropdown-login').remove();
+    document.getElementById('dropdown-logout').setAttribute("href", userInfo.logoutUrl);
     displayNickname();
   }
 
@@ -56,12 +59,21 @@ async function htmlInject(templatePath, targetID) {
 /**
  * Updates the comment section after a new comment is submitted
  */
-function updateCommentSection() {
-  // Wait for the form to submit before resetting
-  setTimeout(function(){ 
-    document.getElementById('comment-form').reset();
-    getComments();
-    }, 1000);
+async function updateCommentSection() {
+  const textElement = document.getElementById("comment-text");
+
+  if (textElement) {
+    const text = textElement.value;
+    const response = await fetch('/new-comment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({text: text})});
+    textElement.value = '';
+  }
+
+  await getComments();
 }
 
 /**
@@ -104,7 +116,7 @@ function createCommentElement(comment) {
 
 function createAnyElement(tag, text) {
   const textElement = document.createElement(tag);
-  textElement.innerText = text;
+  textElement.innerHTML = text.replace(/\\n/, "<br>");
   return textElement;
 }
 
