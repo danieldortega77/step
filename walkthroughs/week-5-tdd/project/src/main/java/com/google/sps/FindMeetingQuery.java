@@ -26,14 +26,14 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     List<TimeRange> output = Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, true));
 
-    // For each mandatory attendee
+    // Update output time slots for all mandatory attendees
     for (String attendee : request.getAttendees()) {
       output = updateOutput(events, attendee, output);
     }
 
     List<TimeRange> mandatoryOutput = cleanUpOutput(request, output);
     
-    // For each optional attendee
+    // Update output time slots for all optional attendees
     for (String attendee : request.getOptionalAttendees()) {
       output = updateOutput(events, attendee, output);
     }

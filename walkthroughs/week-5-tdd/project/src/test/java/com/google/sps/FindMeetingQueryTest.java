@@ -314,7 +314,7 @@ public final class FindMeetingQueryTest {
     //
     // Events  :       |--A--|-C|  |--B--|
     // Day     : |-----------------------------|
-    // Options : |--1--|                 |--3--|
+    // Options : |--1--|                 |--2--|
 
     Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartDuration(TIME_0800AM, DURATION_30_MINUTES),
@@ -366,8 +366,8 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void onlyOptionalAttendees() {
-    // Have each person have different events. We should see two options because each person has
-    // split the restricted times.
+    // Have each *optional* person have different events. We should see two options because each 
+    // person has split the restricted times.
     //
     // Events  :       |--A--|     |--B--|
     // Day     : |-----------------------------|
@@ -394,12 +394,12 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void onlyOptionalAttendeesWithNoGaps() {
-    // Have each person have different events. We should see two options because each person has
-    // split the restricted times.
+    // Have each *optional* person have different events. We should see no options because
+    // there are no gaps in the schedule.
     //
-    // Events  :       |--A--|     |--B--|
+    // Events  : |--A--|--B--|--------A--------|
     // Day     : |-----------------------------|
-    // Options : |--1--|     |--2--|     |--3--|
+    // Options : 
 
     Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0900AM, false),
