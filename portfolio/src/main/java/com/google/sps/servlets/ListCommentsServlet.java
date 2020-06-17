@@ -65,12 +65,6 @@ public class ListCommentsServlet extends HttpServlet {
       }
     }
 
-    // Edge case: all comments are greater than toxicity tolerance
-    if (comments.size() == 0 && results != null) {
-      Comment comment = new Comment("There are no comments satisfying your search request.", "Comment Bot", new Date(), 0);
-      comments.add(comment);
-    }
-
     // Convert the comments to JSON
     String json = convertToJson(comments);
 

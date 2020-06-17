@@ -111,15 +111,6 @@ async function getComments() {
   for (var comment of comments) {
     commentsElement.appendChild(createCommentElement(comment, displayToxicity));
   }
-
-  if (comments.length == 0) {
-    document.getElementById('comment-section').style.visibility = 'hidden';
-  } else {
-    document.getElementById('comment-section').style.visibility = 'visible';
-    for (var comment of comments) {
-      commentsElement.appendChild(createCommentElement(comment));
-    }
-  }
 }
 
 /**
@@ -164,7 +155,7 @@ async function deleteComments() {
  */
 async function getToxicity(text) {
   const response = await fetch(
-  'https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=API_KEY_HERE',
+  'https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyC9mw1TrAmKo3FHkkEP0gkoDLQ-_lIFpLI',
   {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
