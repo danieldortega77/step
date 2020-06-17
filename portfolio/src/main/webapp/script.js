@@ -171,8 +171,6 @@ async function getToxicity(text) {
     body: JSON.stringify({comment: {text: text}, languages: [], requestedAttributes: { TOXICITY: {} }})
   });
   const data = await response.json();
-  console.log(data);
-  console.log(data.attributeScores.TOXICITY.summaryScore.value);
   return data.attributeScores.TOXICITY.summaryScore.value;
 }
 
