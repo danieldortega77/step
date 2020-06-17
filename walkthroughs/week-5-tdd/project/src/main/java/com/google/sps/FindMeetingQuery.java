@@ -26,65 +26,86 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     List<TimeRange> output = Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, true));
 
-    // For each attendee
+    // For each mandatory attendee
     for (String attendee : request.getAttendees()) {
-      // For each time slot of that attendee
-      for (Event event : events) {
-        if (event.getAttendees().contains(attendee)) {
-          TimeRange existingTR = event.getWhen();
-          List<TimeRange> tempRanges = new ArrayList<TimeRange>();
-
-          // For each currently "open" time slot
-          for (TimeRange possibleTR : output) {
-            if (possibleTR.overlaps(existingTR)) {
-              // Case 1: E |------|
-              //         P  |---|
-              //
-              // Case 2: E     |---|
-              //         P |----------|
-              //
-              // Case 3: E     |-------|
-              //         P  |------|
-              //
-              // Case 4: E |-----|
-              //         P   |-------|
-              int possibleStart = possibleTR.start();
-              int possibleEnd = possibleTR.end();
-              int existingStart = existingTR.start();
-              int existingEnd = existingTR.end();
-
-              if (existingTR.contains(possibleTR)) {
-                // Disregard possibleTR
-                continue;
-              } else if (possibleTR.contains(existingTR)) {
-                // Split into two on either side
-                tempRanges.add(TimeRange.fromStartEnd(possibleStart, existingStart, false));
-                tempRanges.add(TimeRange.fromStartEnd(existingEnd, possibleEnd, false));
-              } else if (possibleStart < existingStart) {
-                // Split into one on left
-                tempRanges.add(TimeRange.fromStartEnd(possibleStart, existingStart, false));
-              } else if (possibleEnd > existingEnd) {
-                // Split into one on right
-                tempRanges.add(TimeRange.fromStartEnd(existingEnd, possibleEnd, false));
-              }
-            } else {
-              tempRanges.add(possibleTR);
-            }
-          }
-          output = tempRanges;
-        }
-      }
+      output = updateOutput(events, attendee, output);
     }
 
-    List<TimeRange> tempRanges = new ArrayList<TimeRange>();
+    List<TimeRange> mandatoryOutput = cleanUpOutput(request, output);
+    
+    // For each optional attendee
+    for (String attendee : request.getOptionalAttendees()) {
+      output = updateOutput(events, attendee, output);
+    }
+
+    List<TimeRange> optionalOutput = cleanUpOutput(request, output);
+
+    if (optionalOutput.size() == 0 && request.getAttendees().size() != 0) {
+      return mandatoryOutput;
+    }
+    return optionalOutput;
+  }
+
+  List<TimeRange> updateOutput(Collection<Event> events, String attendee, List<TimeRange> output) {
+    // For each time slot of that attendee
+    for (Event event : events) {
+      if (event.getAttendees().contains(attendee)) {
+        TimeRange existingTR = event.getWhen();
+        List<TimeRange> tempRanges = new ArrayList<TimeRange>();
+
+        // For each currently "open" time slot
+        for (TimeRange possibleTR : output) {
+          if (possibleTR.overlaps(existingTR)) {
+            // Case 1: E |------|
+            //         P  |---|
+            //
+            // Case 2: E     |---|
+            //         P |----------|
+            //
+            // Case 3: E     |-------|
+            //         P  |------|
+            //
+            // Case 4: E |-----|
+            //         P   |-------|
+            int possibleStart = possibleTR.start();
+            int possibleEnd = possibleTR.end();
+            int existingStart = existingTR.start();
+            int existingEnd = existingTR.end();
+
+            if (existingTR.contains(possibleTR)) {
+              // Disregard possibleTR
+              continue;
+            } else if (possibleTR.contains(existingTR)) {
+              // Split into two on either side
+              tempRanges.add(TimeRange.fromStartEnd(possibleStart, existingStart, false));
+              tempRanges.add(TimeRange.fromStartEnd(existingEnd, possibleEnd, false));
+            } else if (possibleStart < existingStart) {
+              // Split into one on left
+              tempRanges.add(TimeRange.fromStartEnd(possibleStart, existingStart, false));
+            } else if (possibleEnd > existingEnd) {
+              // Split into one on right
+              tempRanges.add(TimeRange.fromStartEnd(existingEnd, possibleEnd, false));
+            }
+          } else {
+            tempRanges.add(possibleTR);
+          }
+        }
+        output = tempRanges;
+      }
+    }
+    return output;
+  }
+
+  // Remove any leftover time slots that have durations outside of [requestedDuration, infinity)
+  List<TimeRange> cleanUpOutput(MeetingRequest request, List<TimeRange> output) {
+    List<TimeRange> tempOutput = new ArrayList<TimeRange>();
     for (TimeRange possibleTR : output) {
       int duration = possibleTR.duration();
-      if (duration == 0 || duration < request.getDuration()) {
+      if (duration < request.getDuration()) {
         continue;
       }
-      tempRanges.add(possibleTR);
+      tempOutput.add(possibleTR);
     }
-
-    return tempRanges;
+    return tempOutput;
   }
 }
