@@ -274,7 +274,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void optionalAttendeeDoesNotAffect() {
+  public void optionalAttendeeDoesNotAffectOutput() {
     // Have each person have different events. We should see two options because each person has
     // split the restricted times.
     // Additionally, add an optional attendee with an all-day event. This should not affect output.
@@ -306,7 +306,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void optionalAttendeeAffects() {
+  public void optionalAttendeeAffectsOutput() {
     // Have each person have different events. We should see two options because each person has
     // split the restricted times.
     // Additionally, add an optional attendee. This should affect output because there are possible
@@ -337,7 +337,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void justEnoughRoomWithOptional() {
+  public void justEnoughRoomWithOptionalAttendee() {
     // Have one person, but make it so that there is just enough room at one point in the day to
     // have the meeting.
     // The optional attendee should not be considered because the time slot is too small.

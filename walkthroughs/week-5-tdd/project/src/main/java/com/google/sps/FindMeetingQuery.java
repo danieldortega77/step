@@ -20,8 +20,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class FindMeetingQuery {
-  private static final int TIME_0830AM = TimeRange.getTimeInMinutes(8, 30);
-  private static final int TIME_0900AM = TimeRange.getTimeInMinutes(9, 0);
 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     List<TimeRange> output = Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, true));
