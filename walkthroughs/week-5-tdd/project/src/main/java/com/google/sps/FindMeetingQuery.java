@@ -22,29 +22,29 @@ import java.util.List;
 public final class FindMeetingQuery {
 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    List<TimeRange> output = Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, true));
+    List<TimeRange> availableTimeRanges = Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, true));
 
     // Update output time slots for all mandatory attendees
     for (String attendee : request.getAttendees()) {
-      output = updateOutput(events, attendee, output);
+      availableTimeRanges = updateAvailableTimeRanges(events, attendee, availableTimeRanges);
     }
 
-    List<TimeRange> mandatoryOutput = cleanUpOutput(request, output);
+    List<TimeRange> mandatoryTimeRanges = cleanUpOutput(request, availableTimeRanges);
     
     // Update output time slots for all optional attendees
     for (String attendee : request.getOptionalAttendees()) {
-      output = updateOutput(events, attendee, output);
+      availableTimeRanges = updateAvailableTimeRanges(events, attendee, availableTimeRanges);
     }
 
-    List<TimeRange> optionalOutput = cleanUpOutput(request, output);
+    List<TimeRange> optionalTimeRanges = cleanUpOutput(request, availableTimeRanges);
 
-    if (optionalOutput.size() == 0 && request.getAttendees().size() != 0) {
-      return mandatoryOutput;
+    if (optionalTimeRanges.size() == 0 && request.getAttendees().size() != 0) {
+      return mandatoryTimeRanges;
     }
-    return optionalOutput;
+    return optionalTimeRanges;
   }
 
-  List<TimeRange> updateOutput(Collection<Event> events, String attendee, List<TimeRange> output) {
+  List<TimeRange> updateAvailableTimeRanges(Collection<Event> events, String attendee, List<TimeRange> availableTimeRanges) {
     // For each time slot of that attendee
     for (Event event : events) {
       if (event.getAttendees().contains(attendee)) {
@@ -52,7 +52,7 @@ public final class FindMeetingQuery {
         List<TimeRange> tempRanges = new ArrayList<TimeRange>();
 
         // For each currently "open" time slot
-        for (TimeRange possibleTR : output) {
+        for (TimeRange possibleTR : availableTimeRanges) {
           if (possibleTR.overlaps(existingTR)) {
             // Case 1: E |------|
             //         P  |---|
@@ -88,10 +88,10 @@ public final class FindMeetingQuery {
             tempRanges.add(possibleTR);
           }
         }
-        output = tempRanges;
+        availableTimeRanges = tempRanges;
       }
     }
-    return output;
+    return availableTimeRanges;
   }
 
   // Remove any leftover time slots that have durations outside of [requestedDuration, infinity)
