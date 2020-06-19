@@ -108,7 +108,7 @@ async function getComments() {
   }
   const displayToxicity = displayToxicityElement.checked;
 
-  for (var comment of comments) {
+  for (const comment of comments) {
     commentsElement.appendChild(createCommentElement(comment, displayToxicity));
   }
 }
