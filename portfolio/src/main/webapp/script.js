@@ -155,7 +155,7 @@ async function deleteComments() {
  */
 async function getToxicity(text) {
   const response = await fetch(
-  'https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyC9mw1TrAmKo3FHkkEP0gkoDLQ-_lIFpLI',
+  'https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=API_KEY_HERE',
   {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
