@@ -64,12 +64,13 @@ async function updateCommentSection() {
 
   if (textElement) {
     const text = textElement.value;
+    const toxicity = await getToxicity(text);
     const response = await fetch('/new-comment', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({text: text})});
+      body: JSON.stringify({text: text, toxicity: toxicity})});
     textElement.value = '';
   }
 
@@ -85,38 +86,56 @@ async function getComments() {
     return;
   }
   const maxComments = maxCommentsElement.value;
-  const response = await fetch('/list-comments?max-comments=' + maxComments);
+
+  const maxToxicityElement = document.getElementById('max-toxicity');
+  if (!maxToxicityElement) {
+    return;
+  }
+  const maxToxicity = maxToxicityElement.value;
+
+  const response = await fetch('/list-comments?max-comments=' + maxComments + '&max-toxicity=' + maxToxicity);
   const comments = await response.json();
+
   const commentsElement = document.getElementById('comments-list');
+  if (!commentsElement) {
+    return;
+  }
   commentsElement.innerHTML = '';
 
-  if (comments.length == 0) {
-    document.getElementById('comment-section').style.visibility = 'hidden';
-  } else {
-    document.getElementById('comment-section').style.visibility = 'visible';
-    for (var comment of comments) {
-      commentsElement.appendChild(createCommentElement(comment));
-    }
+  const displayToxicityElement = document.getElementById('display-toxicity');
+  if (!displayToxicityElement) {
+    return;
+  }
+  const displayToxicity = displayToxicityElement.checked;
+
+  for (const comment of comments) {
+    commentsElement.appendChild(createCommentElement(comment, displayToxicity));
   }
 }
 
 /**
  * Creates an element containing a comment.
  */
-function createCommentElement(comment) {
+function createCommentElement(comment, displayToxicity) {
   const commentElement = document.createElement('div');
   commentElement.innerHTML = '';
 
   commentElement.appendChild(createAnyElement('h5', comment.author));
   commentElement.appendChild(createAnyElement('h6', comment.time));
   commentElement.appendChild(createAnyElement('p',  comment.text));
+  if (displayToxicity) {
+    commentElement.appendChild(createAnyElement('p',  comment.toxicity));
+  }
 
   return commentElement;
 }
 
 function createAnyElement(tag, text) {
   const textElement = document.createElement(tag);
-  textElement.innerHTML = text.replace(/\\n/, "<br>");
+  if (typeof(text) == "string") {
+    text = text.replace(/\\n/g, "<br>");
+  }
+  textElement.innerHTML = text;
   return textElement;
 }
 
@@ -129,6 +148,21 @@ async function deleteComments() {
     const response = await fetch('/delete-comments', {method: 'POST'});
     getComments();
   }
+}
+
+/**
+ * Returns the toxicity of the text input.
+ */
+async function getToxicity(text) {
+  const response = await fetch(
+  'https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=API_KEY_HERE',
+  {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({comment: {text: text}, languages: [], requestedAttributes: { TOXICITY: {} }})
+  });
+  const data = await response.json();
+  return data.attributeScores.TOXICITY.summaryScore.value;
 }
 
 /**

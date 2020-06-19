@@ -8,17 +8,20 @@ public class Comment {
   private final String text;
   private final String author;
   private final Date time;
+  private final double toxicity;
 
-  public Comment(String text, String author) {
+  public Comment(String text, String author, double toxicity) {
     this.text = text;
     this.author = author;
     this.time = new Date();
+    this.toxicity = toxicity;
   }
 
-  public Comment(String text, String author, Date time) {
+  public Comment(String text, String author, Date time, double toxicity) {
     this.text = text;
     this.author = author;
     this.time = time;
+    this.toxicity = toxicity;
   }
   
   public String getText() {
@@ -31,5 +34,9 @@ public class Comment {
 
   public Date getTime() {
     return time;
+  }
+
+  public double getToxicity() {
+    return toxicity;
   }
 }
